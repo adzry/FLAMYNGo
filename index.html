@@ -11,26 +11,30 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <style>
+    .live-app-embed{margin:48px 0 10px;border:1px solid rgba(21,19,27,.12);border-radius:12px;background:#faf9fb;overflow:hidden;box-shadow:0 18px 50px rgba(21,19,27,.08)}
+    .live-app-head{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:20px 22px 16px;border-bottom:1px solid rgba(21,19,27,.08);background:#fff}
+    .live-app-head h3{font-size:1.2rem;margin:0}
+    .live-app-status{font-size:.62rem;font-weight:800;letter-spacing:.14em;color:#6b3fd4;border:1px solid rgba(107,63,212,.24);border-radius:999px;padding:5px 9px}
+    .live-app-tabs{display:flex;gap:6px;padding:10px;background:#fff;border-bottom:1px solid rgba(21,19,27,.08)}
+    .live-app-tab{appearance:none;border:1px solid transparent;background:transparent;color:#5c5566;border-radius:8px;padding:9px 12px;font:600 .78rem/1.2 'DM Sans',system-ui,sans-serif;cursor:pointer;transition:background .2s ease,color .2s ease,border-color .2s ease}
+    .live-app-tab:hover{background:#faf9fb;color:#15131b}
+    .live-app-tab.is-active{background:#15131b;color:#fff;border-color:#15131b}
+    .live-app-frame-wrap{position:relative;width:100%;background:#f5f4f7}
+    .live-app-frame{display:block;width:100%;height:680px;border:0;background:#fff}
+    .live-app-note{margin:0;padding:10px 16px 14px;color:#9691a0;font-size:.7rem;line-height:1.45;background:#fff}
+    @media(max-width:640px){.live-app-embed{margin-top:34px;border-radius:10px}.live-app-head{padding:16px}.live-app-tabs{overflow-x:auto;flex-wrap:nowrap}.live-app-tab{white-space:nowrap}.live-app-frame{height:620px}.live-app-note{font-size:.66rem}}
+  </style>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
-
   <header class="topbar">
-    <a class="topbar-brand" href="#overview" aria-label="FLAMYNGo home">
-      <img src="assets/flamyn-go-logo.png" alt="FLAMYNGo">
-    </a>
-    <button class="nav-toggle" id="navToggle" aria-controls="sidebar" aria-expanded="false">
-      <span></span><span></span><span></span>
-      <span class="sr-only">Menu</span>
-    </button>
+    <a class="topbar-brand" href="#overview" aria-label="FLAMYNGo home"><img src="assets/flamyn-go-logo.png" alt="FLAMYNGo"></a>
+    <button class="nav-toggle" id="navToggle" aria-controls="sidebar" aria-expanded="false"><span></span><span></span><span></span><span class="sr-only">Menu</span></button>
   </header>
-
   <div class="drawer-backdrop" id="drawerBackdrop"></div>
-
   <aside class="sidebar" id="sidebar">
-    <a class="sidebar-brand" href="#overview" aria-label="FLAMYNGo home">
-      <img src="assets/flamyn-go-logo.png" alt="FLAMYNGo">
-    </a>
+    <a class="sidebar-brand" href="#overview" aria-label="FLAMYNGo home"><img src="assets/flamyn-go-logo.png" alt="FLAMYNGo"></a>
     <p class="sidebar-kicker">KIK 2026<br>Hospital Yan</p>
     <nav class="sidebar-nav" aria-label="Navigasi utama">
       <a href="#overview"><span class="nav-num">01</span><span class="nav-label">Overview</span></a>
@@ -46,336 +50,46 @@
     </nav>
     <p class="sidebar-footer">Hospital Yan<br>KIK 2026</p>
   </aside>
-
   <main id="main">
-
     <section id="overview" class="section hero-section" data-reveal>
       <div class="hero-grid">
         <img class="hero-logo" src="assets/flamyn-go-logo.png" alt="FLAMYNGo — Fast Logistics &amp; Alert Medication (YAN Network)">
-
-        <div class="hero-showcase" data-showcase>
-          <div class="showcase-viewport" data-showcase-viewport>
-            <div class="showcase-track" data-showcase-track>
-
-              <article class="showcase-slide"
-                data-video-src="" data-poster-src="assets/physical/trolley-diagram-rendered.jpg" data-video-type="mp4">
-                <span class="showcase-badge">System preview</span>
-                <img class="showcase-poster" src="assets/physical/trolley-diagram-rendered.jpg" alt="">
-                <button class="showcase-play" type="button" aria-label="View larger: Physical trolley">
-                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
-                </button>
-                <div class="showcase-caption">
-                  <p class="showcase-title">01 — Physical</p>
-                  <p class="showcase-subtitle">Susun atur troli sistematik mengikut kategori ubat</p>
-                </div>
-              </article>
-
-              <article class="showcase-slide"
-                data-video-src="" data-poster-src="assets/digital/ward-status-ui.png" data-video-type="mp4">
-                <span class="showcase-badge">System preview</span>
-                <img class="showcase-poster" src="assets/digital/ward-status-ui.png" alt="">
-                <button class="showcase-play" type="button" aria-label="View larger: Digital status system">
-                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
-                </button>
-                <div class="showcase-caption">
-                  <p class="showcase-title">02 — Digital</p>
-                  <p class="showcase-subtitle">Status troli dikemaskini automatik pada setiap imbasan</p>
-                </div>
-              </article>
-
-              <article class="showcase-slide"
-                data-video-src="" data-poster-src="assets/evidence/monitoring-dashboard.png" data-video-type="mp4">
-                <span class="showcase-badge">System preview</span>
-                <img class="showcase-poster" src="assets/evidence/monitoring-dashboard.png" alt="">
-                <button class="showcase-play" type="button" aria-label="View larger: Live dashboard">
-                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
-                </button>
-                <div class="showcase-caption">
-                  <p class="showcase-title">03 — Live</p>
-                  <p class="showcase-subtitle">Rekod dan status troli merentasi wad dalam masa nyata</p>
-                </div>
-              </article>
-
-            </div>
-          </div>
-          <div class="showcase-dots" data-showcase-dots aria-label="Video showcase slides"></div>
-        </div>
-
-        <div class="hero-text">
-          <p class="hero-kicker">One innovation. Two connected components.</p>
-          <h1 class="hero-headline">Connect.<br><em>Alert.</em><br>Move.</h1>
-          <p class="hero-subline">Fast Logistics &amp; Alert Medication <span>(YAN Network)</span></p>
-          <p class="hero-descriptor">Integrated floor-stock trolley + real-time medication tracking</p>
-          <p class="hero-lead">FLAMYNGo connects a systematic medication trolley with a real-time notification workflow, giving pharmacy and wards clearer visibility from preparation to collection.</p>
-          <a class="hero-cta" href="#problem">Lihat perjalanan inovasi <span aria-hidden="true">↓</span></a>
-        </div>
+        <div class="hero-showcase" data-showcase><div class="showcase-viewport" data-showcase-viewport><div class="showcase-track" data-showcase-track>
+          <article class="showcase-slide" data-video-src="" data-poster-src="assets/physical/trolley-diagram-rendered.jpg" data-video-type="mp4"><span class="showcase-badge">System preview</span><img class="showcase-poster" src="assets/physical/trolley-diagram-rendered.jpg" alt=""><button class="showcase-play" type="button" aria-label="View larger: Physical trolley"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></button><div class="showcase-caption"><p class="showcase-title">01 — Physical</p><p class="showcase-subtitle">Susun atur troli sistematik mengikut kategori ubat</p></div></article>
+          <article class="showcase-slide" data-video-src="" data-poster-src="assets/digital/ward-status-ui.png" data-video-type="mp4"><span class="showcase-badge">System preview</span><img class="showcase-poster" src="assets/digital/ward-status-ui.png" alt=""><button class="showcase-play" type="button" aria-label="View larger: Digital status system"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></button><div class="showcase-caption"><p class="showcase-title">02 — Digital</p><p class="showcase-subtitle">Status troli dikemaskini automatik pada setiap imbasan</p></div></article>
+          <article class="showcase-slide" data-video-src="" data-poster-src="assets/evidence/monitoring-dashboard.png" data-video-type="mp4"><span class="showcase-badge">System preview</span><img class="showcase-poster" src="assets/evidence/monitoring-dashboard.png" alt=""><button class="showcase-play" type="button" aria-label="View larger: Live dashboard"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></button><div class="showcase-caption"><p class="showcase-title">03 — Live</p><p class="showcase-subtitle">Rekod dan status troli merentasi wad dalam masa nyata</p></div></article>
+        </div></div><div class="showcase-dots" data-showcase-dots aria-label="Video showcase slides"></div></div>
+        <div class="hero-text"><p class="hero-kicker">One innovation. Two connected components.</p><h1 class="hero-headline">Connect.<br><em>Alert.</em><br>Move.</h1><p class="hero-subline">Fast Logistics &amp; Alert Medication <span>(YAN Network)</span></p><p class="hero-descriptor">Integrated floor-stock trolley + real-time medication tracking</p><p class="hero-lead">FLAMYNGo connects a systematic medication trolley with a real-time notification workflow, giving pharmacy and wards clearer visibility from preparation to collection.</p><a class="hero-cta" href="#problem">Lihat perjalanan inovasi <span aria-hidden="true">↓</span></a></div>
       </div>
-
-      <div class="video-modal" data-video-modal hidden>
-        <div class="video-modal-backdrop" data-video-modal-close></div>
-        <div class="video-modal-panel" role="dialog" aria-modal="true" aria-label="Video player">
-          <button class="video-modal-close" type="button" data-video-modal-close aria-label="Close video">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>
-          </button>
-          <div class="video-modal-body" data-video-modal-body></div>
-        </div>
-      </div>
+      <div class="video-modal" data-video-modal hidden><div class="video-modal-backdrop" data-video-modal-close></div><div class="video-modal-panel" role="dialog" aria-modal="true" aria-label="Video player"><button class="video-modal-close" type="button" data-video-modal-close aria-label="Close video"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg></button><div class="video-modal-body" data-video-modal-body></div></div></div>
     </section>
-
-    <section id="problem" class="section" data-reveal>
-      <p class="eyebrow"><span class="eyebrow-num">02</span> The Problem</p>
-      <h2>Troli bergerak.<br><span class="accent">Tetapi statusnya?</span></h2>
-      <p class="pull-quote">Medication logistics should not depend on guesswork.</p>
-      <p class="section-intro">Pengurusan floor stock sebelum ini bergantung kepada penyimpanan fizikal yang kurang tersusun dan semakan manual. FLAMYNGo bermula daripada masalah operasi yang sebenar — bukan sekadar mahu menghasilkan aplikasi baharu.</p>
-
-      <p class="row-kicker problem-flow-kicker">Old workflow</p>
-      <div class="flow-line">
-        <span class="flow-step">Mixed storage</span><span class="flow-arrow" aria-hidden="true">→</span>
-        <span class="flow-step">Manual checking</span><span class="flow-arrow" aria-hidden="true">→</span>
-        <span class="flow-step">Uncertain trolley status</span><span class="flow-arrow" aria-hidden="true">→</span>
-        <span class="flow-step">Repeated physical checking</span>
-      </div>
-
-      <div class="problem-list">
-        <div class="problem-row">
-          <span class="row-num">01</span>
-          <div>
-            <p class="row-kicker">Penyimpanan</p>
-            <h3>Ubat bercampur dalam raga / bekas plastik</h3>
-            <p>Ubat oral, IV dan cecair tidak mempunyai pemisahan fizikal yang sistematik, meningkatkan risiko kekeliruan dan kesilapan pengendalian.</p>
-          </div>
-        </div>
-        <div class="problem-row">
-          <span class="row-num">02</span>
-          <div>
-            <p class="row-kicker">Visibiliti</p>
-            <h3>Tiada status masa nyata</h3>
-            <p>Status troli bergantung kepada telefon atau semakan fizikal. Ini menyukarkan staf mengetahui sama ada troli sedang dihantar, sedang diisi atau sudah tersedia.</p>
-          </div>
-        </div>
-        <div class="problem-row">
-          <span class="row-num">03</span>
-          <div>
-            <p class="row-kicker">Masa Operasi</p>
-            <h3>Semakan mengambil masa</h3>
-            <p>Data baseline projek merekodkan masa counter-check farmasi dan jururawat melebihi 15 minit.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="concept-figure problem-figure">
-        <p class="concept-figure-kicker">Before</p>
-        <div class="concept-flow">
-          <span class="concept-step">Storage</span>
-          <span class="concept-arrow" aria-hidden="true">↓</span>
-          <span class="concept-step">Manual check</span>
-          <span class="concept-arrow" aria-hidden="true">↓</span>
-          <span class="concept-step">Phone / physical check</span>
-          <span class="concept-arrow" aria-hidden="true">↓</span>
-          <span class="concept-step concept-step--uncertain">Uncertain status</span>
-        </div>
-        <p class="concept-figure-caption">Before-state visual — asset pending</p>
-      </div>
-      <p class="row-kicker baseline-label">Baseline observation</p>
-      <div class="stat-row">
-        <div class="stat"><strong>1–3×</strong><span>kesilapan ubat / bulan</span></div>
-        <div class="stat"><strong>1–2×</strong><span>pecah / tumpah / bulan</span></div>
-        <div class="stat"><strong>&gt;15</strong><span>minit semakan operasi</span></div>
-      </div>
-      <p class="footnote">Data projek berdasarkan pembekalan floor-stock kepada Unit Kecemasan dan Wad Melor 1–4.</p>
-    </section>
-
-    <section id="innovation" class="section" data-reveal>
-      <p class="eyebrow"><span class="eyebrow-num">03</span> The Innovation</p>
-      <h2 class="innovation-statement">One innovation.<br><span class="accent">Two components.</span></h2>
-      <div class="innovation-split">
-        <div class="innovation-block">
-          <p class="row-kicker">Physical</p>
-          <h3>Troli Sistematik</h3>
-          <p>Troli floor-stock disusun semula secara sistematik mengikut kategori ubat — mengurangkan kekeliruan dan risiko pengendalian di wad.</p>
-        </div>
-        <div class="innovation-join" aria-hidden="true">+</div>
-        <div class="innovation-block">
-          <p class="row-kicker">Digital</p>
-          <h3>Notifikasi Masa Nyata</h3>
-          <p>Sistem notifikasi digital menghubungkan wad dan farmasi — status troli boleh dilihat serta-merta, tanpa perlu semakan fizikal.</p>
-        </div>
-      </div>
-
-      <div class="innovation-connector" aria-hidden="true"><span>↓</span></div>
-      <p class="row-kicker innovation-flow-kicker">One connected workflow</p>
-      <div class="flow-line innovation-flow">
-        <span class="flow-step">Ward</span><span class="flow-arrow" aria-hidden="true">→</span>
-        <span class="flow-step">Pharmacy</span><span class="flow-arrow" aria-hidden="true">→</span>
-        <span class="flow-step">Ward</span>
-      </div>
-      <p class="footnote">Satu QR yang sama menghubungkan komponen fizikal dan digital di sepanjang aliran kerja ini.</p>
-    </section>
-
-    <section id="physical" class="section" data-reveal>
-      <p class="eyebrow"><span class="eyebrow-num">04</span> Physical</p>
-      <h2>Direka mengikut kategori,<br><span class="accent">bukan mengikut kebiasaan.</span></h2>
-      <p class="section-intro">Koper FLAMYNGo™ — <strong>40 × 35 × 25 cm</strong>, dibina bersama Lembaga Kemajuan Wilayah Kedah (KEDA), disusun kepada tiga zon terasing mengikut kategori ubat.</p>
-      <div class="physical-figures">
-        <figure class="figure">
-          <img src="assets/physical/trolley-diagram-rendered.jpg" alt="Lakaran teknikal koper FLAMYNGo MELOR 4 menunjukkan tiga zon: Tablets, Injections dan Liquids">
-          <figcaption class="figure-cap"><span class="figure-cap-label">Rendered</span><p class="figure-cap-text">Koper FLAMYNGo™ — 40 × 35 × 25 cm, 3 zon kod warna</p></figcaption>
-        </figure>
-        <figure class="figure figure--secondary">
-          <img src="assets/physical/trolley-diagram-line.jpg" alt="Lakaran garis teknikal koper FLAMYNGo dengan dimensi setiap kompartmen">
-          <figcaption class="figure-cap"><span class="figure-cap-label">Technical</span><p class="figure-cap-text">Susun atur kompartmen mengikut kategori ubat</p></figcaption>
-        </figure>
-      </div>
-      <div class="physical-categories">
-        <div class="category-row"><span class="cat-letter">A</span><div><h3>Oral solids / return medication</h3><p>Ubat oral disusun berasingan daripada IV dan cecair untuk mengelakkan kekeliruan pengendalian.</p></div></div>
-        <div class="category-row"><span class="cat-letter">B</span><div><h3>IV &amp; injections</h3><p>Ubat suntikan disimpan dalam ruang khusus, mengurangkan risiko pencampuran dengan ubat oral.</p></div></div>
-        <div class="category-row"><span class="cat-letter">C</span><div><h3>Liquids / fridge / heavier medication</h3><p>Cecair dan ubat memerlukan sejukan diasingkan mengikut keperluan penyimpanan yang betul.</p></div></div>
-      </div>
-      <p class="footnote">Lakaran teknikal berdasarkan dokumentasi seni bina penyelesaian projek (Koper FLAMYNGo™, fabrikasi bersama KEDA).</p>
-    </section>
-
-    <section id="digital" class="section" data-reveal>
-      <p class="eyebrow"><span class="eyebrow-num">05</span> Digital</p>
-      <h2>Satu QR. Tiga status.<br><span class="accent">Kelihatan masa nyata.</span></h2>
-      <div class="workflow">
-        <div class="workflow-step">
-          <span class="workflow-num">1</span>
-          <h3>Ward</h3>
-          <p>Troli dihantar dari wad. Kod QR diimbas untuk mendaftarkan troli dan mula aliran kerja.</p>
-        </div>
-        <div class="workflow-line" aria-hidden="true"></div>
-        <div class="workflow-step">
-          <span class="workflow-num">2</span>
-          <h3>Pharmacy</h3>
-          <p>Troli diisi semula di farmasi. Status dikemaskini kepada <strong>"Pengisian ubat selesai."</strong></p>
-        </div>
-        <div class="workflow-line" aria-hidden="true"></div>
-        <div class="workflow-step">
-          <span class="workflow-num">3</span>
-          <h3>Ward</h3>
-          <p>Wad dimaklumkan. Setelah diambil, status disahkan sebagai <strong>"Troli ubat telah diambil."</strong></p>
-        </div>
-      </div>
-      <div class="digital-grid">
-        <ul class="workflow-details">
-          <li>Setiap imbasan QR merekod <strong>timestamp automatik</strong> — tiada kemasukan data manual.</li>
-          <li>Notifikasi dihantar terus kepada <strong>peranan staf</strong> yang berkaitan pada setiap peringkat.</li>
-          <li>Peringatan / eskalasi automatik jika status tidak disahkan dalam <strong>15 minit</strong>.</li>
-        </ul>
-        <figure class="figure digital-figure">
-          <img src="assets/digital/ward-status-ui.png" alt="Skrin status troli masa nyata yang dilihat oleh staf wad">
-          <figcaption class="figure-cap"><span class="figure-cap-label">Ward view</span><p class="figure-cap-text">Status troli yang dilihat oleh staf wad, dikemaskini automatik</p></figcaption>
-        </figure>
-      </div>
-    </section>
-
+    <section id="problem" class="section" data-reveal><p class="eyebrow"><span class="eyebrow-num">02</span> The Problem</p><h2>Troli bergerak.<br><span class="accent">Tetapi statusnya?</span></h2><p class="pull-quote">Medication logistics should not depend on guesswork.</p><p class="section-intro">Pengurusan floor stock sebelum ini bergantung kepada penyimpanan fizikal yang kurang tersusun dan semakan manual. FLAMYNGo bermula daripada masalah operasi yang sebenar — bukan sekadar mahu menghasilkan aplikasi baharu.</p><p class="row-kicker problem-flow-kicker">Old workflow</p><div class="flow-line"><span class="flow-step">Mixed storage</span><span class="flow-arrow" aria-hidden="true">→</span><span class="flow-step">Manual checking</span><span class="flow-arrow" aria-hidden="true">→</span><span class="flow-step">Uncertain trolley status</span><span class="flow-arrow" aria-hidden="true">→</span><span class="flow-step">Repeated physical checking</span></div><div class="problem-list"><div class="problem-row"><span class="row-num">01</span><div><p class="row-kicker">Penyimpanan</p><h3>Ubat bercampur dalam raga / bekas plastik</h3><p>Ubat oral, IV dan cecair tidak mempunyai pemisahan fizikal yang sistematik, meningkatkan risiko kekeliruan dan kesilapan pengendalian.</p></div></div><div class="problem-row"><span class="row-num">02</span><div><p class="row-kicker">Visibiliti</p><h3>Tiada status masa nyata</h3><p>Status troli bergantung kepada telefon atau semakan fizikal. Ini menyukarkan staf mengetahui sama ada troli sedang dihantar, sedang diisi atau sudah tersedia.</p></div></div><div class="problem-row"><span class="row-num">03</span><div><p class="row-kicker">Masa Operasi</p><h3>Semakan mengambil masa</h3><p>Data baseline projek merekodkan masa counter-check farmasi dan jururawat melebihi 15 minit.</p></div></div></div><div class="concept-figure problem-figure"><p class="concept-figure-kicker">Before</p><div class="concept-flow"><span class="concept-step">Storage</span><span class="concept-arrow" aria-hidden="true">↓</span><span class="concept-step">Manual check</span><span class="concept-arrow" aria-hidden="true">↓</span><span class="concept-step">Phone / physical check</span><span class="concept-arrow" aria-hidden="true">↓</span><span class="concept-step concept-step--uncertain">Uncertain status</span></div><p class="concept-figure-caption">Before-state visual — asset pending</p></div><p class="row-kicker baseline-label">Baseline observation</p><div class="stat-row"><div class="stat"><strong>1–3×</strong><span>kesilapan ubat / bulan</span></div><div class="stat"><strong>1–2×</strong><span>pecah / tumpah / bulan</span></div><div class="stat"><strong>&gt;15</strong><span>minit semakan operasi</span></div></div><p class="footnote">Data projek berdasarkan pembekalan floor-stock kepada Unit Kecemasan dan Wad Melor 1–4.</p></section>
+    <section id="innovation" class="section" data-reveal><p class="eyebrow"><span class="eyebrow-num">03</span> The Innovation</p><h2 class="innovation-statement">One innovation.<br><span class="accent">Two components.</span></h2><div class="innovation-split"><div class="innovation-block"><p class="row-kicker">Physical</p><h3>Troli Sistematik</h3><p>Troli floor-stock disusun semula secara sistematik mengikut kategori ubat — mengurangkan kekeliruan dan risiko pengendalian di wad.</p></div><div class="innovation-join" aria-hidden="true">+</div><div class="innovation-block"><p class="row-kicker">Digital</p><h3>Notifikasi Masa Nyata</h3><p>Sistem notifikasi digital menghubungkan wad dan farmasi — status troli boleh dilihat serta-merta, tanpa perlu semakan fizikal.</p></div></div><div class="innovation-connector" aria-hidden="true"><span>↓</span></div><p class="row-kicker innovation-flow-kicker">One connected workflow</p><div class="flow-line innovation-flow"><span class="flow-step">Ward</span><span class="flow-arrow" aria-hidden="true">→</span><span class="flow-step">Pharmacy</span><span class="flow-arrow" aria-hidden="true">→</span><span class="flow-step">Ward</span></div><p class="footnote">Satu QR yang sama menghubungkan komponen fizikal dan digital di sepanjang aliran kerja ini.</p></section>
+    <section id="physical" class="section" data-reveal><p class="eyebrow"><span class="eyebrow-num">04</span> Physical</p><h2>Direka mengikut kategori,<br><span class="accent">bukan mengikut kebiasaan.</span></h2><p class="section-intro">Koper FLAMYNGo™ — <strong>40 × 35 × 25 cm</strong>, dibina bersama Lembaga Kemajuan Wilayah Kedah (KEDA), disusun kepada tiga zon terasing mengikut kategori ubat.</p><div class="physical-figures"><figure class="figure"><img src="assets/physical/trolley-diagram-rendered.jpg" alt="Lakaran teknikal koper FLAMYNGo MELOR 4 menunjukkan tiga zon: Tablets, Injections dan Liquids"><figcaption class="figure-cap"><span class="figure-cap-label">Rendered</span><p class="figure-cap-text">Koper FLAMYNGo™ — 40 × 35 × 25 cm, 3 zon kod warna</p></figcaption></figure><figure class="figure figure--secondary"><img src="assets/physical/trolley-diagram-line.jpg" alt="Lakaran garis teknikal koper FLAMYNGo dengan dimensi setiap kompartmen"><figcaption class="figure-cap"><span class="figure-cap-label">Technical</span><p class="figure-cap-text">Susun atur kompartmen mengikut kategori ubat</p></figcaption></figure></div><div class="physical-categories"><div class="category-row"><span class="cat-letter">A</span><div><h3>Oral solids / return medication</h3><p>Ubat oral disusun berasingan daripada IV dan cecair untuk mengelakkan kekeliruan pengendalian.</p></div></div><div class="category-row"><span class="cat-letter">B</span><div><h3>IV &amp; injections</h3><p>Ubat suntikan disimpan dalam ruang khusus, mengurangkan risiko pencampuran dengan ubat oral.</p></div></div><div class="category-row"><span class="cat-letter">C</span><div><h3>Liquids / fridge / heavier medication</h3><p>Cecair dan ubat memerlukan sejukan diasingkan mengikut keperluan penyimpanan yang betul.</p></div></div></div><p class="footnote">Lakaran teknikal berdasarkan dokumentasi seni bina penyelesaian projek (Koper FLAMYNGo™, fabrikasi bersama KEDA).</p></section>
+    <section id="digital" class="section" data-reveal><p class="eyebrow"><span class="eyebrow-num">05</span> Digital</p><h2>Satu QR. Tiga status.<br><span class="accent">Kelihatan masa nyata.</span></h2><div class="workflow"><div class="workflow-step"><span class="workflow-num">1</span><h3>Ward</h3><p>Troli dihantar dari wad. Kod QR diimbas untuk mendaftarkan troli dan mula aliran kerja.</p></div><div class="workflow-line" aria-hidden="true"></div><div class="workflow-step"><span class="workflow-num">2</span><h3>Pharmacy</h3><p>Troli diisi semula di farmasi. Status dikemaskini kepada <strong>"Pengisian ubat selesai."</strong></p></div><div class="workflow-line" aria-hidden="true"></div><div class="workflow-step"><span class="workflow-num">3</span><h3>Ward</h3><p>Wad dimaklumkan. Setelah diambil, status disahkan sebagai <strong>"Troli ubat telah diambil."</strong></p></div></div><div class="digital-grid"><ul class="workflow-details"><li>Setiap imbasan QR merekod <strong>timestamp automatik</strong> — tiada kemasukan data manual.</li><li>Notifikasi dihantar terus kepada <strong>peranan staf</strong> yang berkaitan pada setiap peringkat.</li><li>Peringatan / eskalasi automatik jika status tidak disahkan dalam <strong>15 minit</strong>.</li></ul><figure class="figure digital-figure"><img src="assets/digital/ward-status-ui.png" alt="Skrin status troli masa nyata yang dilihat oleh staf wad"><figcaption class="figure-cap"><span class="figure-cap-label">Ward view</span><p class="figure-cap-text">Status troli yang dilihat oleh staf wad, dikemaskini automatik</p></figcaption></figure></div></section>
     <section id="live" class="section" data-reveal>
       <p class="eyebrow"><span class="eyebrow-num">06</span> Live Data</p>
       <h2>Bukan konsep.<br><span class="accent">Sistem sebenar yang beroperasi.</span></h2>
       <p class="pull-quote">Every movement leaves a digital trail.</p>
-      <figure class="figure live-figure">
-        <img src="assets/evidence/monitoring-dashboard.png" alt="Dashboard troli ubat HYAN sebenar — penapis, carian dan rekod pergerakan troli">
-        <figcaption class="figure-cap"><span class="figure-cap-label">Database</span><p class="figure-cap-text">Dashboard troli ubat sebenar — rekod dan status masa nyata</p></figcaption>
-      </figure>
-      <div class="live-grid">
-        <div class="live-card"><h3>Notification Interface</h3><p>Notifikasi masa nyata setiap kali status troli berubah.</p></div>
-        <div class="live-card"><h3>Live Status Dashboard</h3><p>Paparan status semua troli merentasi wad dalam satu skrin.</p></div>
-        <div class="live-card"><h3>Movement Timeline</h3><p>Jejak pergerakan troli mengikut urutan masa yang tepat.</p></div>
-        <div class="live-card"><h3>Records Log</h3><p>Rekod setiap imbasan QR disimpan untuk audit dan semakan.</p></div>
-        <div class="live-card"><h3>Analytics View</h3><p>Ringkasan trend dan prestasi operasi dari semasa ke semasa.</p></div>
+      <figure class="figure live-figure"><img src="assets/evidence/monitoring-dashboard.png" alt="Dashboard troli ubat HYAN sebenar — penapis, carian dan rekod pergerakan troli"><figcaption class="figure-cap"><span class="figure-cap-label">Database</span><p class="figure-cap-text">Dashboard troli ubat sebenar — rekod dan status masa nyata</p></figcaption></figure>
+      <div class="live-app-embed" id="hyan-live-embed">
+        <div class="live-app-head"><div><p class="row-kicker">HYAN live system</p><h3>Troli Ubat HYAN</h3></div><span class="live-app-status">LIVE</span></div>
+        <div class="live-app-tabs" role="tablist" aria-label="Paparan sistem Troli Ubat HYAN">
+          <button type="button" class="live-app-tab is-active" role="tab" aria-selected="true" data-app="notification">Sistem Notifikasi Wad</button>
+          <button type="button" class="live-app-tab" role="tab" aria-selected="false" data-app="dashboard">Dashboard Analitik</button>
+        </div>
+        <div class="live-app-frame-wrap"><iframe class="live-app-frame" title="Sistem Notifikasi Wad — Troli Ubat HYAN" src="https://script.google.com/macros/s/AKfycbz03oHgzgJ042GaAHWeSLZ0H8iwcDBCjfbPXcbmdc9Abc3NO3jNVjlOVvqCxBOpQR85/exec" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="fullscreen"></iframe></div>
+        <p class="live-app-note">Paparan dimuat terus daripada Web App operasi. Data dan sistem backend tidak disalin ke GitHub Pages.</p>
       </div>
+      <div class="live-grid"><div class="live-card"><h3>Notification Interface</h3><p>Notifikasi masa nyata setiap kali status troli berubah.</p></div><div class="live-card"><h3>Live Status Dashboard</h3><p>Paparan status semua troli merentasi wad dalam satu skrin.</p></div><div class="live-card"><h3>Movement Timeline</h3><p>Jejak pergerakan troli mengikut urutan masa yang tepat.</p></div><div class="live-card"><h3>Records Log</h3><p>Rekod setiap imbasan QR disimpan untuk audit dan semakan.</p></div><div class="live-card"><h3>Analytics View</h3><p>Ringkasan trend dan prestasi operasi dari semasa ke semasa.</p></div></div>
       <p class="footnote">Akses kepada sistem operasi sebenar diuruskan berasingan daripada showcase ini, dan boleh disediakan untuk tujuan penilaian atas permintaan.</p>
     </section>
-
-    <section id="impact" class="section" data-reveal>
-      <p class="eyebrow"><span class="eyebrow-num">07</span> Impact</p>
-      <h2>Early-phase<br><span class="accent">pilot data.</span></h2>
-      <p class="row-kicker impact-result-kicker">Pilot data</p>
-      <div class="impact-row">
-        <div class="impact-stat"><strong data-count="100" data-suffix="%">0%</strong><span>charter compliance ≤ 4 jam</span></div>
-        <div class="impact-stat"><strong data-count="62" data-suffix="">0</strong><span>rekod pergerakan troli</span></div>
-        <div class="impact-stat"><strong data-count="6" data-suffix="+">0+</strong><span>wad / unit terlibat</span></div>
-      </div>
-      <div class="before-after-figure impact-figure">
-        <div class="ba-col">
-          <p class="ba-col-label">Before</p>
-          <p class="ba-col-value">Baseline observation</p>
-        </div>
-        <div class="ba-arrow" aria-hidden="true">→</div>
-        <div class="ba-col ba-col--pending">
-          <p class="ba-col-label">After</p>
-          <p class="ba-col-value">Data pending</p>
-        </div>
-      </div>
-      <p class="footnote">Tempoh pengukuran: 15–21 Ogos 2026. Data ini merupakan hasil awal fasa pilot projek.</p>
-    </section>
-
-    <section id="roi" class="section" data-reveal>
-      <p class="eyebrow"><span class="eyebrow-num">08</span> ROI / Cost-Effectiveness</p>
-      <h2>Measuring value,<br><span class="accent">not just activity.</span></h2>
-      <p class="pull-quote pull-quote--pending">[ROI calculation — data pending]</p>
-      <p class="section-intro">Nilai kos-keberkesanan penuh FLAMYNGo masih dalam pengukuran. Bahagian ini menggariskan kaedah dan kategori yang akan dinilai — bukan angka rekaan.</p>
-      <div class="chart-framework roi-figure" aria-hidden="true">
-        <svg viewBox="0 0 320 130" fill="none" stroke="currentColor" stroke-width="1.4">
-          <line x1="14" y1="6" x2="14" y2="112" stroke-opacity=".4"/>
-          <line x1="14" y1="112" x2="308" y2="112" stroke-opacity=".4"/>
-          <line x1="60" y1="26" x2="60" y2="112" stroke-dasharray="3 5" stroke-opacity=".5"/>
-          <line x1="119" y1="26" x2="119" y2="112" stroke-dasharray="3 5" stroke-opacity=".5"/>
-          <line x1="178" y1="26" x2="178" y2="112" stroke-dasharray="3 5" stroke-opacity=".5"/>
-          <line x1="237" y1="26" x2="237" y2="112" stroke-dasharray="3 5" stroke-opacity=".5"/>
-          <line x1="296" y1="26" x2="296" y2="112" stroke-dasharray="3 5" stroke-opacity=".5"/>
-        </svg>
-        <span class="chart-framework-label">ROI framework — data pending</span>
-      </div>
-      <div class="roi-list">
-        <div class="roi-row"><h3>Fabrication Cost</h3><p>Kos sekali sahaja untuk pembinaan / pengubahsuaian troli fizikal.</p><span class="roi-status">Data pending</span></div>
-        <div class="roi-row"><h3>Operating Cost</h3><p>Kos berterusan sistem QR dan penyelenggaraan notifikasi digital.</p><span class="roi-status">Data pending</span></div>
-        <div class="roi-row"><h3>Staff Time Saved</h3><p>Perbandingan masa semakan manual sebelum dan selepas FLAMYNGo.</p><span class="roi-status">Data pending</span></div>
-        <div class="roi-row"><h3>Wastage / Breakage Reduction</h3><p>Perubahan kadar pecah, tumpah atau kesilapan ubat bulanan.</p><span class="roi-status">Data pending</span></div>
-        <div class="roi-row"><h3>Estimated Payback Period</h3><p>Tempoh dianggarkan untuk kos pelaksanaan pulih melalui penjimatan operasi.</p><span class="roi-status">Data pending</span></div>
-      </div>
-      <p class="footnote">Angka ROI sepenuhnya memerlukan tempoh pengukuran yang lebih panjang dan akan diterbitkan sebaik disahkan.</p>
-    </section>
-
-    <section id="replicability" class="section" data-reveal>
-      <p class="eyebrow"><span class="eyebrow-num">09</span> Replicability</p>
-      <h2>Built at Hospital Yan.<br><span class="accent">Designed to travel.</span></h2>
-
-      <div class="flow-line replicability-flow">
-        <span class="flow-step">Hospital Yan</span><span class="flow-arrow" aria-hidden="true">→</span>
-        <span class="flow-step">Ward</span><span class="flow-arrow" aria-hidden="true">→</span>
-        <span class="flow-step">Unit</span><span class="flow-arrow" aria-hidden="true">→</span>
-        <span class="flow-step">Other wards</span><span class="flow-arrow" aria-hidden="true">→</span>
-        <span class="flow-step">Other facilities</span>
-      </div>
-      <p class="footnote replicability-flow-note">Konseptual — mewakili haluan replikasi yang mungkin, bukan pelaksanaan sebenar yang telah disahkan.</p>
-
-      <div class="replicability-list">
-        <div class="replicability-row"><h3>Wad lain</h3><p>Reka bentuk troli modular boleh disesuaikan mengikut kombinasi ubat wad berbeza.</p></div>
-        <div class="replicability-row"><h3>Unit lain</h3><p>Aliran kerja berasaskan QR tidak memerlukan perkakasan proprietari — mudah diguna pakai unit lain.</p></div>
-        <div class="replicability-row"><h3>Hospital lain</h3><p>Konsep boleh diskalakan daripada satu wad kepada rangkaian seluruh hospital.</p></div>
-        <div class="replicability-row"><h3>Logistik ubat lain</h3><p>Prinsip visibiliti masa nyata terpakai kepada mana-mana aliran kerja logistik ubat, bukan floor stock sahaja.</p></div>
-      </div>
-    </section>
-
-    <section id="roadmap" class="section" data-reveal>
-      <p class="eyebrow"><span class="eyebrow-num">10</span> Roadmap</p>
-      <h2>From prototype<br><span class="accent">to network.</span></h2>
-      <div class="roadmap-track">
-        <div class="roadmap-step"><span class="roadmap-dot"></span><h3>Prototype</h3><p>Reka bentuk awal troli dan aliran kerja digital.</p></div>
-        <div class="roadmap-step is-current"><span class="roadmap-dot"></span><h3>Pilot</h3><p>Pengukuran fasa awal — 15–21 Ogos 2026.</p><span class="roadmap-tag">You are here</span></div>
-        <div class="roadmap-step"><span class="roadmap-dot"></span><h3>Validation</h3><p>Pengesahan data merentasi tempoh dan wad yang lebih luas.</p></div>
-        <div class="roadmap-step"><span class="roadmap-dot"></span><h3>Expansion</h3><p>Pelaksanaan ke wad dan unit tambahan.</p></div>
-        <div class="roadmap-step"><span class="roadmap-dot"></span><h3>Replication</h3><p>Adaptasi kepada hospital dan aliran kerja logistik lain.</p></div>
-      </div>
-    </section>
-
-    <footer class="site-end">
-      <p>FLAMYNGo — Connect. Alert. Move. · KIK 2026, Hospital Yan</p>
-    </footer>
-
+    <section id="impact" class="section" data-reveal><p class="eyebrow"><span class="eyebrow-num">07</span> Impact</p><h2>Early-phase<br><span class="accent">pilot data.</span></h2><p class="row-kicker impact-result-kicker">Pilot data</p><div class="impact-row"><div class="impact-stat"><strong data-count="100" data-suffix="%">0%</strong><span>charter compliance ≤ 4 jam</span></div><div class="impact-stat"><strong data-count="62" data-suffix="">0</strong><span>rekod pergerakan troli</span></div><div class="impact-stat"><strong data-count="6" data-suffix="+">0+</strong><span>wad / unit terlibat</span></div></div><div class="before-after-figure impact-figure"><div class="ba-col"><p class="ba-col-label">Before</p><p class="ba-col-value">Baseline observation</p></div><div class="ba-arrow" aria-hidden="true">→</div><div class="ba-col ba-col--pending"><p class="ba-col-label">After</p><p class="ba-col-value">Data pending</p></div></div><p class="footnote">Tempoh pengukuran: 15–21 Ogos 2026. Data ini merupakan hasil awal fasa pilot projek.</p></section>
+    <section id="roi" class="section" data-reveal><p class="eyebrow"><span class="eyebrow-num">08</span> ROI / Cost-Effectiveness</p><h2>Measuring value,<br><span class="accent">not just activity.</span></h2><p class="pull-quote pull-quote--pending">[ROI calculation — data pending]</p><p class="section-intro">Nilai kos-keberkesanan penuh FLAMYNGo masih dalam pengukuran. Bahagian ini menggariskan kaedah dan kategori yang akan dinilai — bukan angka rekaan.</p><div class="chart-framework roi-figure" aria-hidden="true"><svg viewBox="0 0 320 130" fill="none" stroke="currentColor" stroke-width="1.4"><line x1="14" y1="6" x2="14" y2="112" stroke-opacity=".4"/><line x1="14" y1="112" x2="308" y2="112" stroke-opacity=".4"/><line x1="60" y1="26" x2="60" y2="112" stroke-dasharray="3 5" stroke-opacity=".5"/><line x1="119" y1="26" x2="119" y2="112" stroke-dasharray="3 5" stroke-opacity=".5"/><line x1="178" y1="26" x2="178" y2="112" stroke-dasharray="3 5" stroke-opacity=".5"/><line x1="237" y1="26" x2="237" y2="112" stroke-dasharray="3 5" stroke-opacity=".5"/><line x1="296" y1="26" x2="296" y2="112" stroke-dasharray="3 5" stroke-opacity=".5"/></svg><span class="chart-framework-label">ROI framework — data pending</span></div><div class="roi-list"><div class="roi-row"><h3>Fabrication Cost</h3><p>Kos sekali sahaja untuk pembinaan / pengubahsuaian troli fizikal.</p><span class="roi-status">Data pending</span></div><div class="roi-row"><h3>Operating Cost</h3><p>Kos berterusan sistem QR dan penyelenggaraan notifikasi digital.</p><span class="roi-status">Data pending</span></div><div class="roi-row"><h3>Staff Time Saved</h3><p>Perbandingan masa semakan manual sebelum dan selepas FLAMYNGo.</p><span class="roi-status">Data pending</span></div><div class="roi-row"><h3>Wastage / Breakage Reduction</h3><p>Perubahan kadar pecah, tumpah atau kesilapan ubat bulanan.</p><span class="roi-status">Data pending</span></div><div class="roi-row"><h3>Estimated Payback Period</h3><p>Tempoh dianggarkan untuk kos pelaksanaan pulih melalui penjimatan operasi.</p><span class="roi-status">Data pending</span></div></div><p class="footnote">Angka ROI sepenuhnya memerlukan tempoh pengukuran yang lebih panjang dan akan diterbitkan sebaik disahkan.</p></section>
+    <section id="replicability" class="section" data-reveal><p class="eyebrow"><span class="eyebrow-num">09</span> Replicability</p><h2>Built at Hospital Yan.<br><span class="accent">Designed to travel.</span></h2><div class="flow-line replicability-flow"><span class="flow-step">Hospital Yan</span><span class="flow-arrow" aria-hidden="true">→</span><span class="flow-step">Ward</span><span class="flow-arrow" aria-hidden="true">→</span><span class="flow-step">Unit</span><span class="flow-arrow" aria-hidden="true">→</span><span class="flow-step">Other wards</span><span class="flow-arrow" aria-hidden="true">→</span><span class="flow-step">Other facilities</span></div><p class="footnote replicability-flow-note">Konseptual — mewakili haluan replikasi yang mungkin, bukan pelaksanaan sebenar yang telah disahkan.</p><div class="replicability-list"><div class="replicability-row"><h3>Wad lain</h3><p>Reka bentuk troli modular boleh disesuaikan mengikut kombinasi ubat wad berbeza.</p></div><div class="replicability-row"><h3>Unit lain</h3><p>Aliran kerja berasaskan QR tidak memerlukan perkakasan proprietari — mudah diguna pakai unit lain.</p></div><div class="replicability-row"><h3>Hospital lain</h3><p>Konsep boleh diskalakan daripada satu wad kepada rangkaian seluruh hospital.</p></div><div class="replicability-row"><h3>Logistik ubat lain</h3><p>Prinsip visibiliti masa nyata terpakai kepada mana-mana aliran kerja logistik ubat, bukan floor stock sahaja.</p></div></div></section>
+    <section id="roadmap" class="section" data-reveal><p class="eyebrow"><span class="eyebrow-num">10</span> Roadmap</p><h2>From prototype<br><span class="accent">to network.</span></h2><div class="roadmap-track"><div class="roadmap-step"><span class="roadmap-dot"></span><h3>Prototype</h3><p>Reka bentuk awal troli dan aliran kerja digital.</p></div><div class="roadmap-step is-current"><span class="roadmap-dot"></span><h3>Pilot</h3><p>Pengukuran fasa awal — 15–21 Ogos 2026.</p><span class="roadmap-tag">You are here</span></div><div class="roadmap-step"><span class="roadmap-dot"></span><h3>Validation</h3><p>Pengesahan data merentasi tempoh dan wad yang lebih luas.</p></div><div class="roadmap-step"><span class="roadmap-dot"></span><h3>Expansion</h3><p>Pelaksanaan ke wad dan unit tambahan.</p></div><div class="roadmap-step"><span class="roadmap-dot"></span><h3>Replication</h3><p>Adaptasi kepada hospital dan aliran kerja logistik lain.</p></div></div></section>
+    <footer class="site-end"><p>FLAMYNGo — Connect. Alert. Move. · KIK 2026, Hospital Yan</p></footer>
   </main>
-
-  <script src="script.js"></script>
+  <script src="script.js?v=20260915-live"></script>
 </body>
 </html>
