@@ -177,27 +177,98 @@
     }, true);
   }
 
-  /* ---------- Live HYAN web-app tabs ---------- */
+  /* ---------- Live HYAN web-app tabs + ward-specific notification URLs ---------- */
   var liveEmbed = document.getElementById("hyan-live-embed");
   if (liveEmbed) {
-    var notificationUrl = "https://script.google.com/macros/s/AKfycbz03oHgzgJ042GaAHWeSLZ0H8iwcDBCjfbPXcbmdc9Abc3NO3jNVjlOVvqCxBOpQR85/exec";
+    var notificationBaseUrl = "https://script.google.com/macros/s/AKfycbz03oHgzgJ042GaAHWeSLZ0H8iwcDBCjfbPXcbmdc9Abc3NO3jNVjlOVvqCxBOpQR85/exec";
     var dashboardUrl = "https://script.google.com/macros/s/AKfycbzR4h_5QEEeWVKY7eFbYnJ91eNIWLHUJRYt1VSMWvlV4LpZtAYU2JD30ZM01T8coa39uw/exec";
+    var wards = [
+      "Wad Lelaki 4A",
+      "Wad Lelaki 4B",
+      "Wad Perempuan",
+      "Wad Bersalin",
+      "Wad Kanak-Kanak",
+      "Unit Hemodialisis",
+      "Wad Test",
+      "Kecemasan & Trauma",
+      "Klinik Sejahtera",
+      "Klinik Pakar",
+      "ESWL",
+      "Forensik",
+      "Patologi",
+      "Fisioterapi",
+      "Unit Cara Kerja (Occupational Therapy)"
+    ];
+    var selectedWard = "Wad Lelaki 4B";
     var appTabs = Array.prototype.slice.call(liveEmbed.querySelectorAll(".live-app-tab"));
     var frame = liveEmbed.querySelector(".live-app-frame");
+    var tabsHost = liveEmbed.querySelector(".live-app-tabs");
+
+    var wardPicker = document.createElement("div");
+    wardPicker.className = "live-app-ward-picker";
+    wardPicker.style.cssText = "display:flex;align-items:center;gap:8px;margin-right:auto;min-width:0;";
+
+    var wardLabel = document.createElement("label");
+    wardLabel.textContent = "Wad / Unit";
+    wardLabel.setAttribute("for", "hyan-ward-select");
+    wardLabel.style.cssText = "font:600 .72rem/1.2 'DM Sans',system-ui,sans-serif;color:#7b7484;white-space:nowrap;";
+
+    var wardSelect = document.createElement("select");
+    wardSelect.id = "hyan-ward-select";
+    wardSelect.setAttribute("aria-label", "Pilih wad atau unit untuk sistem notifikasi");
+    wardSelect.style.cssText = "appearance:none;border:1px solid rgba(21,19,27,.12);border-radius:8px;background:#fff;color:#15131b;padding:8px 30px 8px 10px;font:600 .76rem/1.2 'DM Sans',system-ui,sans-serif;max-width:min(42vw,280px);cursor:pointer;";
+
+    wards.forEach(function (ward) {
+      var option = document.createElement("option");
+      option.value = ward;
+      option.textContent = ward;
+      wardSelect.appendChild(option);
+    });
+    wardSelect.value = selectedWard;
+    wardPicker.appendChild(wardLabel);
+    wardPicker.appendChild(wardSelect);
+    tabsHost.insertBefore(wardPicker, tabsHost.firstChild);
+
+    function getNotificationUrl(ward) {
+      return notificationBaseUrl + "?wad=" + encodeURIComponent(ward);
+    }
+
+    function setActiveApp(tab) {
+      var isDashboard = tab.getAttribute("data-app") === "dashboard";
+      if (isDashboard) {
+        frame.src = dashboardUrl;
+        frame.title = "Dashboard Analitik — Troli Ubat HYAN";
+        wardSelect.disabled = true;
+        wardSelect.style.opacity = "0.45";
+        wardSelect.style.cursor = "not-allowed";
+      } else {
+        frame.src = getNotificationUrl(wardSelect.value);
+        frame.title = "Sistem Notifikasi " + wardSelect.value + " — Troli Ubat HYAN";
+        wardSelect.disabled = false;
+        wardSelect.style.opacity = "1";
+        wardSelect.style.cursor = "pointer";
+      }
+      appTabs.forEach(function (item) {
+        var active = item === tab;
+        item.classList.toggle("is-active", active);
+        item.setAttribute("aria-selected", active ? "true" : "false");
+      });
+    }
+
+    wardSelect.addEventListener("change", function () {
+      var activeTab = liveEmbed.querySelector('.live-app-tab[data-app="notification"]');
+      if (activeTab && activeTab.classList.contains("is-active")) {
+        frame.src = getNotificationUrl(wardSelect.value);
+        frame.title = "Sistem Notifikasi " + wardSelect.value + " — Troli Ubat HYAN";
+      }
+    });
 
     appTabs.forEach(function (tab) {
-      tab.addEventListener("click", function () {
-        var isDashboard = tab.getAttribute("data-app") === "dashboard";
-        var url = isDashboard ? dashboardUrl : notificationUrl;
-        frame.src = url;
-        frame.title = isDashboard ? "Dashboard Analitik — Troli Ubat HYAN" : "Sistem Notifikasi Wad — Troli Ubat HYAN";
-        appTabs.forEach(function (item) {
-          var active = item === tab;
-          item.classList.toggle("is-active", active);
-          item.setAttribute("aria-selected", active ? "true" : "false");
-        });
-      });
+      tab.addEventListener("click", function () { setActiveApp(tab); });
     });
+
+    var initialNotificationTab = liveEmbed.querySelector('.live-app-tab[data-app="notification"]');
+    if (initialNotificationTab) { setActiveApp(initialNotificationTab); }
   }
 
   /* ---------- Video modal ---------- */
