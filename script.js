@@ -105,17 +105,6 @@
     var slides = Array.prototype.slice.call(track.children);
 
     function goToSlide(slide) {
-      // Smoothness comes from CSS `scroll-behavior` on the track (incl. the
-      // reduced-motion override) - passing behavior:"smooth" here as a JS
-      // option instead can leak into the document's own scroll in Chromium
-      // when html{scroll-behavior:smooth} is set, scrolling the whole page.
-      //
-      // Belt-and-braces guard: some Chromium versions still nudge the outer
-      // page's scroll position while a nested container smooth-scrolls after
-      // a user click (observed here even with no scrollIntoView/window.scrollTo
-      // call anywhere in the path). Pin the page scroll position for the
-      // duration of the slide animation so that drift is corrected immediately
-      // rather than left visible.
       var pageY = window.scrollY;
       var guardUntil = Date.now() + 500;
       function guard() {
@@ -126,9 +115,6 @@
       track.scrollTo({ left: slide.offsetLeft });
     }
 
-    // Plain buttons + aria-current, not role="tab"/"tablist": these are carousel
-    // indicators, not real tabs, and Chromium auto-scrolls the page to reveal a
-    // newly-aria-selected "tab" - a real bug here since the dots never move.
     slides.forEach(function (slide, i) {
       var dot = document.createElement("button");
       dot.type = "button";
@@ -161,7 +147,6 @@
       slides.forEach(function (s) { slideSpy.observe(s); });
     }
 
-    // Desktop click-and-drag navigation (touch devices already get native swipe via scroll-snap).
     var isDown = false, startX = 0, startScroll = 0, moved = false;
     track.addEventListener("pointerdown", function (e) {
       if (e.pointerType === "touch") { return; }
@@ -176,7 +161,7 @@
       if (Math.abs(dx) > 4) { moved = true; }
       track.scrollLeft = startScroll - dx;
     });
-    function endDrag(e) {
+    function endDrag() {
       if (!isDown) { return; }
       isDown = false;
       track.classList.remove("is-dragging");
@@ -191,6 +176,71 @@
     track.addEventListener("click", function (e) {
       if (moved) { e.preventDefault(); e.stopPropagation(); }
     }, true);
+  }
+
+  /* ---------- Live HYAN web-app embed ---------- */
+  var liveSection = document.getElementById("live");
+  if (liveSection) {
+    var notificationUrl = "https://script.google.com/macros/s/AKfycbz03oHgzgJ042GaAHWeSLZ0H8iwcDBCjfbPXcbmdc9Abc3NO3jNVjlOVvqCxBOpQR85/exec";
+    var dashboardUrl = "https://script.google.com/macros/s/AKfycbzR4h_5QEEeWVKY7eFbYnJ91eNIWLHUJRYt1VSMWvlV4LpZtAYU2JD30ZM01T8coa39uw/exec";
+
+    var embed = document.createElement("div");
+    embed.className = "live-app-embed";
+    embed.innerHTML =
+      '<div class="live-app-head">' +
+        '<div><p class="row-kicker">HYAN live system</p><h3>Troli Ubat HYAN</h3></div>' +
+        '<span class="live-app-status">LIVE</span>' +
+      '</div>' +
+      '<div class="live-app-tabs" role="tablist" aria-label="Paparan sistem Troli Ubat HYAN">' +
+        '<button type="button" class="live-app-tab is-active" role="tab" aria-selected="true" data-app="notification">Sistem Notifikasi Wad</button>' +
+        '<button type="button" class="live-app-tab" role="tab" aria-selected="false" data-app="dashboard">Dashboard Analitik</button>' +
+      '</div>' +
+      '<div class="live-app-frame-wrap">' +
+        '<iframe class="live-app-frame" title="Sistem Notifikasi Wad — Troli Ubat HYAN" src="' + notificationUrl + '" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>' +
+      '</div>' +
+      '<p class="live-app-note">Paparan ini dimuat terus daripada Web App operasi sebenar. Data dan sistem backend tidak disalin ke GitHub Pages.</p>';
+
+    var liveFigure = liveSection.querySelector(".live-figure");
+    var liveGrid = liveSection.querySelector(".live-grid");
+    if (liveFigure) {
+      liveFigure.insertAdjacentElement("afterend", embed);
+    } else if (liveGrid) {
+      liveGrid.insertAdjacentElement("beforebegin", embed);
+    } else {
+      liveSection.appendChild(embed);
+    }
+
+    var style = document.createElement("style");
+    style.textContent =
+      ".live-app-embed{margin:48px 0 10px;border:1px solid rgba(21,19,27,.12);border-radius:12px;background:#faf9fb;overflow:hidden;box-shadow:0 18px 50px rgba(21,19,27,.08)}" +
+      ".live-app-head{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:20px 22px 16px;border-bottom:1px solid rgba(21,19,27,.08);background:#fff}" +
+      ".live-app-head h3{font-size:1.2rem;margin:0}" +
+      ".live-app-status{font-size:.62rem;font-weight:800;letter-spacing:.14em;color:#6b3fd4;border:1px solid rgba(107,63,212,.24);border-radius:999px;padding:5px 9px}" +
+      ".live-app-tabs{display:flex;gap:6px;padding:10px;background:#fff;border-bottom:1px solid rgba(21,19,27,.08)}" +
+      ".live-app-tab{appearance:none;border:1px solid transparent;background:transparent;color:#5c5566;border-radius:8px;padding:9px 12px;font:600 .78rem/1.2 'DM Sans',system-ui,sans-serif;cursor:pointer;transition:background .2s ease,color .2s ease,border-color .2s ease}" +
+      ".live-app-tab:hover{background:#faf9fb;color:#15131b}" +
+      ".live-app-tab.is-active{background:#15131b;color:#fff;border-color:#15131b}" +
+      ".live-app-frame-wrap{position:relative;width:100%;background:#f5f4f7}" +
+      ".live-app-frame{display:block;width:100%;height:680px;border:0;background:#fff}" +
+      ".live-app-note{margin:0;padding:10px 16px 14px;color:#9691a0;font-size:.7rem;line-height:1.45;background:#fff}" +
+      "@media(max-width:640px){.live-app-embed{margin-top:34px;border-radius:10px}.live-app-head{padding:16px}.live-app-tabs{overflow-x:auto;flex-wrap:nowrap}.live-app-tab{white-space:nowrap}.live-app-frame{height:620px}.live-app-note{font-size:.66rem}}";
+    document.head.appendChild(style);
+
+    var appTabs = Array.prototype.slice.call(embed.querySelectorAll(".live-app-tab"));
+    var frame = embed.querySelector(".live-app-frame");
+    appTabs.forEach(function (tab) {
+      tab.addEventListener("click", function () {
+        var isDashboard = tab.getAttribute("data-app") === "dashboard";
+        var url = isDashboard ? dashboardUrl : notificationUrl;
+        frame.src = url;
+        frame.title = isDashboard ? "Dashboard Analitik — Troli Ubat HYAN" : "Sistem Notifikasi Wad — Troli Ubat HYAN";
+        appTabs.forEach(function (item) {
+          var active = item === tab;
+          item.classList.toggle("is-active", active);
+          item.setAttribute("aria-selected", active ? "true" : "false");
+        });
+      });
+    });
   }
 
   /* ---------- Video modal ---------- */
@@ -208,9 +258,6 @@
       var subtitleText = subtitle ? subtitle.textContent : "";
       var poster = slide.getAttribute("data-poster-src");
 
-      // No real video source yet: show the actual preview image at full size
-      // rather than a spinner implying footage is loading - a loading state
-      // for something that doesn't exist would be misleading.
       if (!src) {
         var wrap = document.createElement("div");
         wrap.className = "preview-full";
@@ -236,7 +283,6 @@
       video.src = src;
       video.controls = true;
       video.autoplay = true;
-      var poster = slide.getAttribute("data-poster-src");
       if (poster) { video.poster = poster; }
       return video;
     }
