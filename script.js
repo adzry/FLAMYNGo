@@ -99,7 +99,6 @@
   /* ---------- Hero video showcase (carousel + drag-to-scroll) ---------- */
   var showcase = document.querySelector("[data-showcase]");
   if (showcase) {
-    var viewport = showcase.querySelector("[data-showcase-viewport]");
     var track = showcase.querySelector("[data-showcase-track]");
     var dotsHost = showcase.querySelector("[data-showcase-dots]");
     var slides = Array.prototype.slice.call(track.children);
@@ -178,56 +177,14 @@
     }, true);
   }
 
-  /* ---------- Live HYAN web-app embed ---------- */
-  var liveSection = document.getElementById("live");
-  if (liveSection) {
+  /* ---------- Live HYAN web-app tabs ---------- */
+  var liveEmbed = document.getElementById("hyan-live-embed");
+  if (liveEmbed) {
     var notificationUrl = "https://script.google.com/macros/s/AKfycbz03oHgzgJ042GaAHWeSLZ0H8iwcDBCjfbPXcbmdc9Abc3NO3jNVjlOVvqCxBOpQR85/exec";
     var dashboardUrl = "https://script.google.com/macros/s/AKfycbzR4h_5QEEeWVKY7eFbYnJ91eNIWLHUJRYt1VSMWvlV4LpZtAYU2JD30ZM01T8coa39uw/exec";
+    var appTabs = Array.prototype.slice.call(liveEmbed.querySelectorAll(".live-app-tab"));
+    var frame = liveEmbed.querySelector(".live-app-frame");
 
-    var embed = document.createElement("div");
-    embed.className = "live-app-embed";
-    embed.innerHTML =
-      '<div class="live-app-head">' +
-        '<div><p class="row-kicker">HYAN live system</p><h3>Troli Ubat HYAN</h3></div>' +
-        '<span class="live-app-status">LIVE</span>' +
-      '</div>' +
-      '<div class="live-app-tabs" role="tablist" aria-label="Paparan sistem Troli Ubat HYAN">' +
-        '<button type="button" class="live-app-tab is-active" role="tab" aria-selected="true" data-app="notification">Sistem Notifikasi Wad</button>' +
-        '<button type="button" class="live-app-tab" role="tab" aria-selected="false" data-app="dashboard">Dashboard Analitik</button>' +
-      '</div>' +
-      '<div class="live-app-frame-wrap">' +
-        '<iframe class="live-app-frame" title="Sistem Notifikasi Wad — Troli Ubat HYAN" src="' + notificationUrl + '" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>' +
-      '</div>' +
-      '<p class="live-app-note">Paparan ini dimuat terus daripada Web App operasi sebenar. Data dan sistem backend tidak disalin ke GitHub Pages.</p>';
-
-    var liveFigure = liveSection.querySelector(".live-figure");
-    var liveGrid = liveSection.querySelector(".live-grid");
-    if (liveFigure) {
-      liveFigure.insertAdjacentElement("afterend", embed);
-    } else if (liveGrid) {
-      liveGrid.insertAdjacentElement("beforebegin", embed);
-    } else {
-      liveSection.appendChild(embed);
-    }
-
-    var style = document.createElement("style");
-    style.textContent =
-      ".live-app-embed{margin:48px 0 10px;border:1px solid rgba(21,19,27,.12);border-radius:12px;background:#faf9fb;overflow:hidden;box-shadow:0 18px 50px rgba(21,19,27,.08)}" +
-      ".live-app-head{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:20px 22px 16px;border-bottom:1px solid rgba(21,19,27,.08);background:#fff}" +
-      ".live-app-head h3{font-size:1.2rem;margin:0}" +
-      ".live-app-status{font-size:.62rem;font-weight:800;letter-spacing:.14em;color:#6b3fd4;border:1px solid rgba(107,63,212,.24);border-radius:999px;padding:5px 9px}" +
-      ".live-app-tabs{display:flex;gap:6px;padding:10px;background:#fff;border-bottom:1px solid rgba(21,19,27,.08)}" +
-      ".live-app-tab{appearance:none;border:1px solid transparent;background:transparent;color:#5c5566;border-radius:8px;padding:9px 12px;font:600 .78rem/1.2 'DM Sans',system-ui,sans-serif;cursor:pointer;transition:background .2s ease,color .2s ease,border-color .2s ease}" +
-      ".live-app-tab:hover{background:#faf9fb;color:#15131b}" +
-      ".live-app-tab.is-active{background:#15131b;color:#fff;border-color:#15131b}" +
-      ".live-app-frame-wrap{position:relative;width:100%;background:#f5f4f7}" +
-      ".live-app-frame{display:block;width:100%;height:680px;border:0;background:#fff}" +
-      ".live-app-note{margin:0;padding:10px 16px 14px;color:#9691a0;font-size:.7rem;line-height:1.45;background:#fff}" +
-      "@media(max-width:640px){.live-app-embed{margin-top:34px;border-radius:10px}.live-app-head{padding:16px}.live-app-tabs{overflow-x:auto;flex-wrap:nowrap}.live-app-tab{white-space:nowrap}.live-app-frame{height:620px}.live-app-note{font-size:.66rem}}";
-    document.head.appendChild(style);
-
-    var appTabs = Array.prototype.slice.call(embed.querySelectorAll(".live-app-tab"));
-    var frame = embed.querySelector(".live-app-frame");
     appTabs.forEach(function (tab) {
       tab.addEventListener("click", function () {
         var isDashboard = tab.getAttribute("data-app") === "dashboard";
