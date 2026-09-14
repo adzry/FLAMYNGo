@@ -4,83 +4,235 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="FLAMYNGo — Fast Logistics & Alert Medication (YAN Network). Inovasi KIK Hospital Yan untuk pengurusan troli ubat floor stock yang sistematik dan bersepadu dengan sistem notifikasi masa nyata.">
-  <meta name="theme-color" content="#17121f">
+  <meta name="theme-color" content="#ffffff">
   <title>FLAMYNGo — Connect. Alert. Move.</title>
   <link rel="icon" type="image/png" href="assets/flamyn-go-logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-  <style>
-    .site-header { padding: 10px 16px 10px 18px; }
-    .brand-logo { width: 148px; height: 60px; display: block; object-fit: contain; object-position: center; }
-    .brand-name { display: none; }
-    .footer-brand { display: flex; align-items: center; gap: 16px; }
-    .footer-brand img { width: 150px; height: 62px; object-fit: contain; display: block; }
-    .footer-brand span { color: #8b8190; }
-    @media (max-width: 650px) {
-      .site-header { padding: 8px 14px 8px 16px; }
-      .brand-logo { width: 128px; height: 52px; }
-      .footer-brand img { width: 125px; height: 52px; }
-      .footer-brand { gap: 10px; }
-    }
-  </style>
 </head>
 <body>
-  <header class="site-header">
-    <a class="brand" href="#top" aria-label="FLAMYNGo home">
-      <img class="brand-logo" src="assets/flamyn-go-logo.png" alt="FLAMYNGo">
-      <span class="brand-name">FLAMYN<span>Go</span></span>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="topbar">
+    <a class="topbar-brand" href="#overview" aria-label="FLAMYNGo home">
+      <img src="assets/flamyn-go-logo.png" alt="FLAMYNGo">
     </a>
-    <nav class="main-nav" aria-label="Navigasi utama">
-      <a href="#problem">Masalah</a>
-      <a href="#innovation">Inovasi</a>
-      <a href="#impact">Impak</a>
-      <a href="#replicability">Replicability</a>
-    </nav>
-    <a class="header-cta" href="#problem">Explore <span aria-hidden="true">↗</span></a>
+    <button class="nav-toggle" id="navToggle" aria-controls="sidebar" aria-expanded="false">
+      <span></span><span></span><span></span>
+      <span class="sr-only">Menu</span>
+    </button>
   </header>
-  <main id="top">
-    <section class="hero section-shell" aria-labelledby="hero-title">
-      <div class="hero-copy">
-        <p class="eyebrow"><span class="pulse-dot"></span> KIK 2026 · HOSPITAL YAN</p>
-        <img class="hero-logo" src="assets/flamyn-go-logo.png" alt="FLAMYNGo — Fast Logistics &amp; Alert Medication (YAN Network)">
-        <h1 id="hero-title">Connect. <em>Alert.</em> Move.</h1>
-        <p class="hero-lead">Satu inovasi. Dua komponen. Pengurusan ubat <strong>floor stock</strong> yang lebih selamat, sistematik dan boleh dilihat secara masa nyata.</p>
-        <div class="hero-actions">
-          <a class="button button-primary" href="#problem">Lihat perjalanan inovasi <span aria-hidden="true">↓</span></a>
-          <span class="hero-note">Fast Logistics &amp; Alert Medication<br><span>(YAN Network)</span></span>
-        </div>
-      </div>
-      <div class="hero-visual" aria-label="Ringkasan dua komponen FLAMYNGo">
-        <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
-        <div class="hero-card hero-card-main glass-card">
-          <div class="card-topline"><span class="status-pill"><span class="status-dot"></span> SYSTEM CONCEPT</span><span class="card-index">01 / 02</span></div>
-          <div class="trolley-visual" aria-hidden="true">
-            <div class="trolley-handle"></div><div class="trolley-body">
-              <div class="drawer drawer-a"><span>A</span><i></i><i></i><i></i></div>
-              <div class="drawer drawer-b"><span>B</span><i></i><i></i></div>
-              <div class="drawer drawer-c"><span>C</span><i></i><i></i></div>
-            </div><div class="trolley-wheel wheel-left"></div><div class="trolley-wheel wheel-right"></div>
+
+  <div class="drawer-backdrop" id="drawerBackdrop"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <a class="sidebar-brand" href="#overview" aria-label="FLAMYNGo home">
+      <img src="assets/flamyn-go-logo.png" alt="FLAMYNGo">
+    </a>
+    <p class="sidebar-kicker">KIK 2026<br>Hospital Yan</p>
+    <nav class="sidebar-nav" aria-label="Navigasi utama">
+      <a href="#overview"><span class="nav-num">01</span><span class="nav-label">Overview</span></a>
+      <a href="#problem"><span class="nav-num">02</span><span class="nav-label">The Problem</span></a>
+      <a href="#innovation"><span class="nav-num">03</span><span class="nav-label">The Innovation</span></a>
+      <a href="#physical"><span class="nav-num">04</span><span class="nav-label">Physical System</span></a>
+      <a href="#digital"><span class="nav-num">05</span><span class="nav-label">Digital System</span></a>
+      <a href="#live"><span class="nav-num">06</span><span class="nav-label">Live System</span></a>
+      <a href="#impact"><span class="nav-num">07</span><span class="nav-label">Impact</span></a>
+      <a href="#roi"><span class="nav-num">08</span><span class="nav-label">ROI</span></a>
+      <a href="#replicability"><span class="nav-num">09</span><span class="nav-label">Replicability</span></a>
+      <a href="#roadmap"><span class="nav-num">10</span><span class="nav-label">Roadmap</span></a>
+    </nav>
+    <p class="sidebar-footer">Hospital Yan<br>KIK 2026</p>
+  </aside>
+
+  <main id="main">
+
+    <section id="overview" class="section hero-section" data-reveal>
+      <img class="hero-logo" src="assets/flamyn-go-logo.png" alt="FLAMYNGo — Fast Logistics &amp; Alert Medication (YAN Network)">
+      <h1 class="hero-headline">Connect.<br><em>Alert.</em><br>Move.</h1>
+      <p class="hero-subline">Fast Logistics &amp; Alert Medication <span>(YAN Network)</span></p>
+      <p class="hero-lead">FLAMYNGo ialah inovasi pengurusan ubat <strong>floor stock</strong> yang bersepadu — menggabungkan troli fizikal yang disusun semula secara sistematik dengan sistem notifikasi digital masa nyata, menghubungkan wad dan farmasi dalam satu aliran kerja yang telus.</p>
+      <a class="hero-cta" href="#problem">Lihat perjalanan inovasi <span aria-hidden="true">↓</span></a>
+    </section>
+
+    <section id="problem" class="section" data-reveal>
+      <p class="eyebrow"><span class="eyebrow-num">02</span> The Problem</p>
+      <h2>Troli bergerak.<br><span class="accent">Tetapi statusnya?</span></h2>
+      <p class="section-intro">Pengurusan floor stock sebelum ini bergantung kepada penyimpanan fizikal yang kurang tersusun dan semakan manual. FLAMYNGo bermula daripada masalah operasi yang sebenar — bukan sekadar mahu menghasilkan aplikasi baharu.</p>
+
+      <div class="problem-list">
+        <div class="problem-row">
+          <span class="row-num">01</span>
+          <div>
+            <p class="row-kicker">Penyimpanan</p>
+            <h3>Ubat bercampur dalam raga / bekas plastik</h3>
+            <p>Ubat oral, IV dan cecair tidak mempunyai pemisahan fizikal yang sistematik, meningkatkan risiko kekeliruan dan kesilapan pengendalian.</p>
           </div>
-          <div class="card-footer"><span>PHYSICAL</span><strong>Troli Sistematik</strong></div>
         </div>
-        <div class="hero-card mini-card notification-card glass-card"><span class="mini-label">DIGITAL</span><strong>LIVE STATUS</strong><div class="mini-status"><span></span> Pengisian selesai</div><small>Real-time notification</small></div>
-        <div class="hero-card mini-card data-card glass-card"><span class="mini-label">DATA</span><strong>TRACKED</strong><div class="mini-bars"><i></i><i></i><i></i><i></i><i></i><i></i></div><small>Automatic movement log</small></div>
+        <div class="problem-row">
+          <span class="row-num">02</span>
+          <div>
+            <p class="row-kicker">Visibiliti</p>
+            <h3>Tiada status masa nyata</h3>
+            <p>Status troli bergantung kepada telefon atau semakan fizikal. Ini menyukarkan staf mengetahui sama ada troli sedang dihantar, sedang diisi atau sudah tersedia.</p>
+          </div>
+        </div>
+        <div class="problem-row">
+          <span class="row-num">03</span>
+          <div>
+            <p class="row-kicker">Masa Operasi</p>
+            <h3>Semakan mengambil masa</h3>
+            <p>Data baseline projek merekodkan masa counter-check farmasi dan jururawat melebihi 15 minit.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat"><strong>1–3×</strong><span>kesilapan ubat / bulan</span></div>
+        <div class="stat"><strong>1–2×</strong><span>pecah / tumpah / bulan</span></div>
+        <div class="stat"><strong>&gt;15</strong><span>minit semakan operasi</span></div>
+      </div>
+      <p class="footnote">Data projek berdasarkan pembekalan floor-stock kepada Unit Kecemasan dan Wad Melor 1–4.</p>
+    </section>
+
+    <section id="innovation" class="section" data-reveal>
+      <p class="eyebrow"><span class="eyebrow-num">03</span> The Innovation</p>
+      <h2 class="innovation-statement">One innovation.<br><span class="accent">Two components.</span></h2>
+      <div class="innovation-split">
+        <div class="innovation-block">
+          <p class="row-kicker">Physical</p>
+          <h3>Troli Sistematik</h3>
+          <p>Troli floor-stock disusun semula secara sistematik mengikut kategori ubat — mengurangkan kekeliruan dan risiko pengendalian di wad.</p>
+        </div>
+        <div class="innovation-join" aria-hidden="true">+</div>
+        <div class="innovation-block">
+          <p class="row-kicker">Digital</p>
+          <h3>Notifikasi Masa Nyata</h3>
+          <p>Sistem notifikasi digital menghubungkan wad dan farmasi — status troli boleh dilihat serta-merta, tanpa perlu semakan fizikal.</p>
+        </div>
       </div>
     </section>
-    <section class="problem section-shell" id="problem" aria-labelledby="problem-title">
-      <div class="section-intro"><p class="eyebrow">01 · THE PROBLEM</p><h2 id="problem-title">Troli bergerak.<br><span>Tetapi statusnya?</span></h2><p>Pengurusan floor stock sebelum ini bergantung kepada penyimpanan fizikal yang kurang tersusun dan semakan manual. FLAMYNGo bermula daripada masalah operasi yang sebenar — bukan sekadar mahu menghasilkan aplikasi baharu.</p></div>
-      <div class="problem-grid">
-        <article class="problem-card glass-card problem-feature"><div class="problem-number">01</div><div><p class="card-kicker">PENYIMPANAN</p><h3>Ubat bercampur dalam raga / bekas plastik</h3><p>Ubat oral, IV dan cecair tidak mempunyai pemisahan fizikal yang sistematik, meningkatkan risiko kekeliruan dan kesilapan pengendalian.</p></div></article>
-        <article class="problem-card glass-card"><div class="problem-number">02</div><div><p class="card-kicker">VISIBILITI</p><h3>Tiada status masa nyata</h3><p>Status troli bergantung kepada telefon atau semakan fizikal. Ini menyukarkan staf mengetahui sama ada troli sedang dihantar, sedang diisi atau sudah tersedia.</p></div></article>
-        <article class="problem-card glass-card"><div class="problem-number">03</div><div><p class="card-kicker">MASA OPERASI</p><h3>Semakan mengambil masa</h3><p>Data baseline projek merekodkan masa counter-check farmasi dan jururawat melebihi 15 minit.</p></div></article>
-        <article class="problem-card glass-card metric-card"><div class="metric-head"><p class="card-kicker">IMPAK BASELINE</p><span aria-hidden="true">↗</span></div><div class="metrics"><div><strong>1–3×</strong><span>kesilapan ubat / bulan</span></div><div><strong>1–2×</strong><span>pecah / tumpah / bulan</span></div><div><strong>&gt;15</strong><span>minit semakan operasi</span></div></div><p class="metric-source">Data projek berdasarkan pembekalan floor-stock kepada Unit Kecemasan dan Wad Melor 1–4.</p></article>
+
+    <section id="physical" class="section" data-reveal>
+      <p class="eyebrow"><span class="eyebrow-num">04</span> Physical System</p>
+      <h2>Direka mengikut kategori,<br><span class="accent">bukan mengikut kebiasaan.</span></h2>
+      <div class="physical-grid">
+        <div class="trolley-visual" aria-hidden="true">
+          <div class="trolley-handle"></div>
+          <div class="trolley-body">
+            <div class="drawer drawer-a"><span>A</span><i></i><i></i><i></i></div>
+            <div class="drawer drawer-b"><span>B</span><i></i><i></i></div>
+            <div class="drawer drawer-c"><span>C</span><i></i><i></i></div>
+          </div>
+          <div class="trolley-wheel wheel-left"></div><div class="trolley-wheel wheel-right"></div>
+        </div>
+        <div class="physical-categories">
+          <div class="category-row"><span class="cat-letter">A</span><div><h3>Oral</h3><p>Ubat oral disusun berasingan daripada IV dan cecair untuk mengelakkan kekeliruan pengendalian.</p></div></div>
+          <div class="category-row"><span class="cat-letter">B</span><div><h3>IV / Injections</h3><p>Ubat suntikan disimpan dalam ruang khusus, mengurangkan risiko pencampuran dengan ubat oral.</p></div></div>
+          <div class="category-row"><span class="cat-letter">C</span><div><h3>Liquids / Fridge</h3><p>Cecair dan ubat memerlukan sejukan diasingkan mengikut keperluan penyimpanan yang betul.</p></div></div>
+        </div>
       </div>
-      <div class="problem-transition" id="innovation"><span>THE RESPONSE</span><div class="transition-line"></div><strong>Daripada “di mana troli?” kepada “statusnya LIVE.”</strong></div>
+      <p class="footnote">Dimensi troli sebenar dan spesifikasi fabrikasi akan dikemaskini daripada dokumentasi projek.</p>
     </section>
-    <section class="future-anchor" id="impact" aria-hidden="true"></section><section class="future-anchor" id="replicability" aria-hidden="true"></section>
+
+    <section id="digital" class="section" data-reveal>
+      <p class="eyebrow"><span class="eyebrow-num">05</span> Digital System</p>
+      <h2>Satu QR. Tiga status.<br><span class="accent">Kelihatan masa nyata.</span></h2>
+      <div class="workflow">
+        <div class="workflow-step">
+          <span class="workflow-num">1</span>
+          <h3>Ward</h3>
+          <p>Troli dihantar dari wad. Kod QR diimbas untuk mula aliran kerja.</p>
+        </div>
+        <div class="workflow-line" aria-hidden="true"></div>
+        <div class="workflow-step">
+          <span class="workflow-num">2</span>
+          <h3>Pharmacy</h3>
+          <p>Troli diisi semula di farmasi. QR diimbas semula — status dikemaskini secara automatik.</p>
+        </div>
+        <div class="workflow-line" aria-hidden="true"></div>
+        <div class="workflow-step">
+          <span class="workflow-num">3</span>
+          <h3>Ward</h3>
+          <p>Troli diterima kembali di wad. QR disahkan — notifikasi selesai dihantar.</p>
+        </div>
+      </div>
+      <ul class="workflow-details">
+        <li>Setiap imbasan QR merekod <strong>timestamp automatik</strong> — tiada kemasukan data manual.</li>
+        <li>Notifikasi dihantar terus kepada <strong>peranan staf</strong> yang berkaitan pada setiap peringkat.</li>
+        <li>Peringatan / eskalasi automatik jika status tidak disahkan dalam <strong>15 minit</strong>.</li>
+      </ul>
+    </section>
+
+    <section id="live" class="section" data-reveal>
+      <p class="eyebrow"><span class="eyebrow-num">06</span> Live System</p>
+      <h2>Bukan konsep.<br><span class="accent">Sistem sebenar yang beroperasi.</span></h2>
+      <div class="live-grid">
+        <div class="live-card"><h3>Notification Interface</h3><p>Notifikasi masa nyata setiap kali status troli berubah.</p></div>
+        <div class="live-card"><h3>Live Status Dashboard</h3><p>Paparan status semua troli merentasi wad dalam satu skrin.</p></div>
+        <div class="live-card"><h3>Movement Timeline</h3><p>Jejak pergerakan troli mengikut urutan masa yang tepat.</p></div>
+        <div class="live-card"><h3>Records Log</h3><p>Rekod setiap imbasan QR disimpan untuk audit dan semakan.</p></div>
+        <div class="live-card"><h3>Analytics View</h3><p>Ringkasan trend dan prestasi operasi dari semasa ke semasa.</p></div>
+      </div>
+      <p class="footnote">Akses kepada sistem operasi sebenar diuruskan berasingan daripada showcase ini, dan boleh disediakan untuk tujuan penilaian atas permintaan.</p>
+    </section>
+
+    <section id="impact" class="section" data-reveal>
+      <p class="eyebrow"><span class="eyebrow-num">07</span> Impact</p>
+      <h2>Early-phase<br><span class="accent">pilot results.</span></h2>
+      <div class="impact-row">
+        <div class="impact-stat"><strong data-count="100" data-suffix="%">0%</strong><span>charter compliance ≤ 4 jam</span></div>
+        <div class="impact-stat"><strong data-count="62" data-suffix="">0</strong><span>rekod pergerakan troli</span></div>
+        <div class="impact-stat"><strong data-count="6" data-suffix="+">0+</strong><span>wad / unit terlibat</span></div>
+      </div>
+      <p class="footnote">Tempoh pengukuran: 15–21 Ogos 2026. Data ini merupakan hasil awal fasa pilot projek.</p>
+    </section>
+
+    <section id="roi" class="section" data-reveal>
+      <p class="eyebrow"><span class="eyebrow-num">08</span> ROI / Cost-Effectiveness</p>
+      <h2>Measuring value,<br><span class="accent">not just activity.</span></h2>
+      <p class="section-intro">Nilai kos-keberkesanan penuh FLAMYNGo masih dalam pengukuran. Bahagian ini menggariskan kaedah dan kategori yang akan dinilai — bukan angka rekaan.</p>
+      <div class="roi-list">
+        <div class="roi-row"><h3>Fabrication Cost</h3><p>Kos sekali sahaja untuk pembinaan / pengubahsuaian troli fizikal.</p><span class="roi-status">Data pending</span></div>
+        <div class="roi-row"><h3>Operating Cost</h3><p>Kos berterusan sistem QR dan penyelenggaraan notifikasi digital.</p><span class="roi-status">Data pending</span></div>
+        <div class="roi-row"><h3>Staff Time Saved</h3><p>Perbandingan masa semakan manual sebelum dan selepas FLAMYNGo.</p><span class="roi-status">Data pending</span></div>
+        <div class="roi-row"><h3>Wastage / Breakage Reduction</h3><p>Perubahan kadar pecah, tumpah atau kesilapan ubat bulanan.</p><span class="roi-status">Data pending</span></div>
+        <div class="roi-row"><h3>Estimated Payback Period</h3><p>Tempoh dianggarkan untuk kos pelaksanaan pulih melalui penjimatan operasi.</p><span class="roi-status">Data pending</span></div>
+      </div>
+      <p class="footnote">Angka ROI sepenuhnya memerlukan tempoh pengukuran yang lebih panjang dan akan diterbitkan sebaik disahkan.</p>
+    </section>
+
+    <section id="replicability" class="section" data-reveal>
+      <p class="eyebrow"><span class="eyebrow-num">09</span> Replicability</p>
+      <h2>Built to transfer,<br><span class="accent">not just to work here.</span></h2>
+      <div class="replicability-list">
+        <div class="replicability-row"><h3>Wad lain</h3><p>Reka bentuk troli modular boleh disesuaikan mengikut kombinasi ubat wad berbeza.</p></div>
+        <div class="replicability-row"><h3>Unit lain</h3><p>Aliran kerja berasaskan QR tidak memerlukan perkakasan proprietari — mudah diguna pakai unit lain.</p></div>
+        <div class="replicability-row"><h3>Hospital lain</h3><p>Konsep boleh diskalakan daripada satu wad kepada rangkaian seluruh hospital.</p></div>
+        <div class="replicability-row"><h3>Logistik ubat lain</h3><p>Prinsip visibiliti masa nyata terpakai kepada mana-mana aliran kerja logistik ubat, bukan floor stock sahaja.</p></div>
+      </div>
+    </section>
+
+    <section id="roadmap" class="section" data-reveal>
+      <p class="eyebrow"><span class="eyebrow-num">10</span> Roadmap</p>
+      <h2>From prototype<br><span class="accent">to network.</span></h2>
+      <div class="roadmap-track">
+        <div class="roadmap-step"><span class="roadmap-dot"></span><h3>Prototype</h3><p>Reka bentuk awal troli dan aliran kerja digital.</p></div>
+        <div class="roadmap-step is-current"><span class="roadmap-dot"></span><h3>Pilot</h3><p>Pengukuran fasa awal — 15–21 Ogos 2026.</p><span class="roadmap-tag">You are here</span></div>
+        <div class="roadmap-step"><span class="roadmap-dot"></span><h3>Validation</h3><p>Pengesahan data merentasi tempoh dan wad yang lebih luas.</p></div>
+        <div class="roadmap-step"><span class="roadmap-dot"></span><h3>Expansion</h3><p>Pelaksanaan ke wad dan unit tambahan.</p></div>
+        <div class="roadmap-step"><span class="roadmap-dot"></span><h3>Replication</h3><p>Adaptasi kepada hospital dan aliran kerja logistik lain.</p></div>
+      </div>
+    </section>
+
+    <footer class="site-end">
+      <p>FLAMYNGo — Connect. Alert. Move. · KIK 2026, Hospital Yan</p>
+    </footer>
+
   </main>
-  <footer class="site-footer"><div class="footer-brand"><img src="assets/flamyn-go-logo.png" alt="FLAMYNGo"><span>Hospital Yan · KIK 2026</span></div><span>Connect. Alert. Move.</span></footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
