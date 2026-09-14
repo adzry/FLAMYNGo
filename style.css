@@ -152,6 +152,20 @@ h2 { font-size: clamp(2.1rem, 4.4vw, 3.2rem); font-weight: 800; }
 .section-intro { max-width: 560px; margin: 26px 0 0; color: var(--ink-soft); font-size: 1.02rem; }
 .row-kicker { margin: 0 0 6px; font-size: .68rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--purple); }
 
+/* Shared process-flow motif: reused in Problem (old workflow), Innovation
+   (connected workflow) and Replicability (how the concept travels). */
+.flow-line { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 0; }
+.flow-line .flow-step {
+  font-size: .78rem; font-weight: 700; letter-spacing: .03em; color: var(--ink);
+  padding: 7px 13px; border: 1px solid var(--line-strong); border-radius: 999px;
+}
+.flow-line .flow-arrow { color: var(--ink-faint); font-size: .8rem; }
+.pull-quote {
+  margin: 26px 0 0; max-width: 640px; font-family: Manrope, sans-serif; font-weight: 700;
+  font-size: clamp(1.3rem, 2.4vw, 1.7rem); letter-spacing: -.01em; line-height: 1.32; color: var(--ink);
+}
+.pull-quote--pending { font-weight: 600; font-size: 1.05rem; color: var(--ink-faint); font-style: italic; }
+
 /* ---------- Hero ---------- */
 /* Strict vertical stack: logo -> video showcase -> headline/text. No 2-column
    grid at any viewport - .hero-grid is a plain centered flex column. */
@@ -168,7 +182,8 @@ h2 { font-size: clamp(2.1rem, 4.4vw, 3.2rem); font-weight: 800; }
 .hero-headline em { color: var(--magenta); font-style: normal; }
 .hero-subline { margin: 0 0 28px; font-size: .95rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-faint); }
 .hero-subline span { text-transform: none; letter-spacing: 0; display: block; font-weight: 500; margin-top: 2px; }
-.hero-lead { max-width: 560px; font-size: 1.1rem; color: var(--ink-soft); margin: 0 0 34px; }
+.hero-descriptor { max-width: 520px; margin: 22px 0 0; font-family: Manrope, sans-serif; font-weight: 700; font-size: 1.15rem; letter-spacing: -.01em; color: var(--ink); }
+.hero-lead { max-width: 560px; font-size: 1.1rem; color: var(--ink-soft); margin: 14px 0 34px; }
 .hero-lead strong { color: var(--ink); }
 .hero-cta { display: inline-flex; align-items: center; gap: 12px; font-weight: 700; font-size: .92rem; color: var(--ink); border-bottom: 2px solid var(--ink); padding-bottom: 4px; }
 
@@ -228,17 +243,22 @@ h2 { font-size: clamp(2.1rem, 4.4vw, 3.2rem); font-weight: 800; }
 }
 .video-modal-close {
   position: absolute; top: 12px; right: 12px; z-index: 2; width: 38px; height: 38px; border-radius: 50%;
-  background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.25); color: #fff; cursor: pointer;
-  display: grid; place-items: center; transition: background .2s ease;
+  /* Solid dark regardless of content behind it - a translucent-white button
+     disappears against a light preview image (vs. always-dark video). */
+  background: rgba(15,13,20,.6); backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,.3);
+  color: #fff; cursor: pointer; display: grid; place-items: center; transition: background .2s ease;
 }
 .video-modal-close:hover { background: rgba(255,255,255,.2); }
 .video-modal-body { width: 100%; height: 100%; display: grid; place-items: center; }
 .video-modal-body iframe, .video-modal-body video { width: 100%; height: 100%; border: 0; display: block; }
-.video-loader { display: flex; flex-direction: column; align-items: center; gap: 16px; color: rgba(255,255,255,.7); text-align: center; padding: 0 24px; }
-.video-loader-spinner { width: 34px; height: 34px; border-radius: 50%; border: 2.5px solid rgba(255,255,255,.2); border-top-color: var(--magenta); animation: spin 1s linear infinite; }
-.video-loader p { margin: 0; font-size: .88rem; }
-.video-loader p.video-loader-title { color: #fff; font-weight: 700; font-family: Manrope, sans-serif; font-size: 1rem; }
-@keyframes spin { to { transform: rotate(360deg); } }
+/* No video source yet: show the real preview image at full size, honestly
+   labeled, instead of a loading state implying footage is on its way. */
+.video-modal-panel:has(.preview-full) { aspect-ratio: auto; width: auto; max-width: min(920px, 100%); max-height: 86vh; background: #14121a; }
+.preview-full { display: flex; flex-direction: column; max-height: 86vh; }
+.preview-full img { display: block; width: 100%; max-height: 70vh; object-fit: contain; background: #0f0d14; }
+.preview-full-cap { padding: 18px 22px 22px; }
+.preview-full-cap p { margin: 4px 0 0; color: rgba(255,255,255,.68); font-size: .84rem; }
+.preview-full-title { margin: 0 !important; color: #fff; font-weight: 700; font-family: Manrope, sans-serif; font-size: 1.02rem; }
 
 @media (min-width: 640px) {
   .showcase-slide { aspect-ratio: 16 / 9; }
@@ -256,6 +276,7 @@ h2 { font-size: clamp(2.1rem, 4.4vw, 3.2rem); font-weight: 800; }
 .problem-row h3 { font-size: 1.3rem; font-weight: 700; margin-bottom: 8px; }
 .problem-row p { margin: 0; color: var(--ink-soft); max-width: 520px; }
 
+.problem-flow-kicker { margin-top: 36px; }
 .problem-figure { margin-top: 50px; max-width: 420px; }
 .stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 56px; padding-top: 30px; border-top: 1px solid var(--line-strong); }
 .stat strong { display: block; font-family: Manrope, sans-serif; font-size: 2.1rem; font-weight: 800; letter-spacing: -.03em; }
@@ -267,6 +288,7 @@ h2 { font-size: clamp(2.1rem, 4.4vw, 3.2rem); font-weight: 800; }
 .innovation-block h3 { font-size: 1.4rem; margin-bottom: 10px; }
 .innovation-block p { margin: 0; color: var(--ink-soft); }
 .innovation-join { font-family: Manrope, sans-serif; font-size: 1.6rem; font-weight: 800; color: var(--ink-faint); }
+.innovation-flow-kicker { margin-top: 50px; padding-top: 40px; border-top: 1px solid var(--line); }
 @media (max-width: 640px) {
   .innovation-split { grid-template-columns: 1fr; text-align: left; }
   .innovation-join { display: none; }
@@ -331,7 +353,9 @@ h2 { font-size: clamp(2.1rem, 4.4vw, 3.2rem); font-weight: 800; }
 @media (max-width: 560px) { .roi-row { grid-template-columns: 1fr; } .roi-status { justify-self: start; } }
 
 /* ---------- Replicability ---------- */
-.replicability-list { margin-top: 50px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px 40px; }
+.replicability-flow { margin-top: 40px; }
+.replicability-flow-note { margin-top: 14px; }
+.replicability-list { margin-top: 50px; padding-top: 40px; border-top: 1px solid var(--line); display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px 40px; }
 .replicability-row { padding-top: 20px; border-top: 1px solid var(--line); }
 .replicability-row h3 { font-size: 1.05rem; margin-bottom: 8px; }
 .replicability-row p { margin: 0; color: var(--ink-soft); font-size: .92rem; }

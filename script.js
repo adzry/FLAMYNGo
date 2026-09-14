@@ -203,15 +203,25 @@
       var src = slide.getAttribute("data-video-src");
       var type = slide.getAttribute("data-video-type") || "mp4";
       var title = slide.querySelector(".showcase-title");
-      var titleText = title ? title.textContent : "Video";
+      var titleText = title ? title.textContent : "Preview";
+      var subtitle = slide.querySelector(".showcase-subtitle");
+      var subtitleText = subtitle ? subtitle.textContent : "";
+      var poster = slide.getAttribute("data-poster-src");
 
+      // No real video source yet: show the actual preview image at full size
+      // rather than a spinner implying footage is loading - a loading state
+      // for something that doesn't exist would be misleading.
       if (!src) {
         var wrap = document.createElement("div");
-        wrap.className = "video-loader";
-        wrap.innerHTML =
-          '<div class="video-loader-spinner" role="status" aria-label="Loading"></div>' +
-          '<p class="video-loader-title">' + titleText + '</p>' +
-          '<p>Video sebenar akan dimuat naik tidak lama lagi.</p>';
+        wrap.className = "preview-full";
+        var img = document.createElement("img");
+        img.src = poster;
+        img.alt = titleText;
+        wrap.appendChild(img);
+        var cap = document.createElement("div");
+        cap.className = "preview-full-cap";
+        cap.innerHTML = '<p class="preview-full-title">' + titleText + '</p><p>' + subtitleText + '</p>';
+        wrap.appendChild(cap);
         return wrap;
       }
       if (type === "youtube" || type === "vimeo") {
