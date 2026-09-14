@@ -153,10 +153,13 @@ h2 { font-size: clamp(2.1rem, 4.4vw, 3.2rem); font-weight: 800; }
 .row-kicker { margin: 0 0 6px; font-size: .68rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--purple); }
 
 /* ---------- Hero ---------- */
+/* Strict vertical stack: logo -> video showcase -> headline/text. No 2-column
+   grid at any viewport - .hero-grid is a plain centered flex column. */
 .hero-section { max-width: 1120px; padding-top: 96px; }
-.hero-grid { display: grid; grid-template-columns: 1fr; gap: 60px; align-items: start; }
-.hero-main { min-width: 0; }
-.hero-logo { width: min(300px, 68%); margin: 0 0 26px; }
+.hero-grid { display: flex; flex-direction: column; align-items: center; gap: 40px; }
+.hero-logo { width: min(220px, 60%); margin: 0; }
+
+.hero-text { width: 100%; max-width: var(--content-w); min-width: 0; }
 .hero-kicker {
   margin: 0 0 22px; font-size: .78rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
   color: var(--ink-soft);
@@ -170,7 +173,7 @@ h2 { font-size: clamp(2.1rem, 4.4vw, 3.2rem); font-weight: 800; }
 .hero-cta { display: inline-flex; align-items: center; gap: 12px; font-weight: 700; font-size: .92rem; color: var(--ink); border-bottom: 2px solid var(--ink); padding-bottom: 4px; }
 
 /* ---------- Hero video showcase ---------- */
-.hero-showcase { min-width: 0; width: min(360px, 100%); margin: 0 auto; }
+.hero-showcase { min-width: 0; width: 100%; max-width: 640px; margin: 0 auto; }
 .showcase-viewport { overflow: hidden; border-radius: var(--radius-md); }
 .showcase-track {
   display: flex; scroll-snap-type: x mandatory; overflow-x: auto; scrollbar-width: none;
@@ -179,7 +182,7 @@ h2 { font-size: clamp(2.1rem, 4.4vw, 3.2rem); font-weight: 800; }
 .showcase-track::-webkit-scrollbar { display: none; }
 .showcase-track.is-dragging { cursor: grabbing; scroll-snap-type: none; }
 .showcase-slide {
-  flex: 0 0 100%; scroll-snap-align: start; position: relative; aspect-ratio: 4 / 5;
+  flex: 0 0 100%; scroll-snap-align: start; position: relative; aspect-ratio: 3 / 2;
   border: 1px solid var(--line-strong); border-radius: var(--radius-md); overflow: hidden;
   background: var(--surface);
 }
@@ -237,9 +240,12 @@ h2 { font-size: clamp(2.1rem, 4.4vw, 3.2rem); font-weight: 800; }
 .video-loader p.video-loader-title { color: #fff; font-weight: 700; font-family: Manrope, sans-serif; font-size: 1rem; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
+@media (min-width: 640px) {
+  .showcase-slide { aspect-ratio: 16 / 9; }
+}
+
 @media (min-width: 900px) {
-  .hero-grid { grid-template-columns: 1.25fr .75fr; gap: 40px; }
-  .hero-showcase { width: 100%; margin-top: 6px; }
+  .hero-logo { width: min(260px, 60%); }
 }
 
 /* ---------- Problem ---------- */
