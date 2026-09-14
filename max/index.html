@@ -8,36 +8,106 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
-<style>
-:root{--ink:#15131b;--soft:#625b6d;--muted:#9a94a4;--paper:#fff;--pink:#d93c98;--purple:#6b3fd4;--gold:#d9a02c;--line:rgba(21,19,27,.12)}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:"DM Sans",sans-serif}a{color:inherit;text-decoration:none}button{font:inherit}.stage{min-height:100vh;overflow:hidden}.top{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;justify-content:space-between;align-items:center;padding:22px 34px;mix-blend-mode:multiply}.top img{width:132px}.top span{font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:var(--soft)}
-.hero{min-height:100vh;display:grid;place-items:center;position:relative;padding:100px 7vw 80px;background:radial-gradient(circle at 78% 42%,rgba(217,60,152,.09),transparent 30%),radial-gradient(circle at 82% 58%,rgba(107,63,212,.07),transparent 28%)}.hero:before{content:"";position:absolute;width:52vw;height:52vw;border:1px solid rgba(107,63,212,.1);border-radius:50%;right:-18vw;top:14vh}.hero-grid{width:min(1280px,100%);display:grid;grid-template-columns:minmax(0,.9fr) minmax(420px,1.1fr);gap:7vw;align-items:center}.eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--soft);margin:0 0 28px}.hero h1{font-family:Manrope,sans-serif;font-size:clamp(5rem,10vw,10rem);line-height:.83;letter-spacing:-.075em;margin:0}.hero h1 em{font-style:normal;color:var(--pink)}.hero-copy{max-width:580px}.hero-copy .sub{font-size:clamp(1rem,1.4vw,1.25rem);color:var(--soft);margin:34px 0 0;max-width:520px}.hero-copy .meta{margin-top:42px;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
-.preview{position:relative}.preview-frame{position:relative;aspect-ratio:4/3;border:1px solid var(--line);background:#f8f7f9;box-shadow:0 35px 80px rgba(21,19,27,.12);overflow:hidden}.preview-frame img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s cubic-bezier(.2,.7,.2,1)}.preview-frame:hover img{transform:scale(1.035)}.preview-label{position:absolute;top:18px;left:18px;z-index:2;background:rgba(255,255,255,.9);padding:8px 11px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:800}.preview-index{position:absolute;right:18px;bottom:18px;background:var(--ink);color:white;padding:8px 11px;font-size:10px;letter-spacing:.12em}.signal{height:1px;background:linear-gradient(90deg,var(--pink),var(--purple),transparent);position:absolute;left:-20%;right:0;bottom:12%;transform:rotate(-7deg);opacity:.8}
-.scroll-cue{position:absolute;bottom:28px;left:7vw;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);display:flex;gap:12px;align-items:center}.scroll-cue i{display:block;width:42px;height:1px;background:var(--ink)}
-.scene{min-height:100vh;padding:15vh 7vw;display:grid;place-items:center;position:relative}.scene-inner{width:min(1100px,100%)}.scene.dark{background:var(--ink);color:#fff}.scene .kicker{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);font-weight:700}.scene h2{font-family:Manrope,sans-serif;font-size:clamp(3rem,7vw,7.5rem);line-height:.92;letter-spacing:-.065em;margin:24px 0}.scene h2 span{color:var(--pink)}.scene p{max-width:620px;font-size:clamp(1rem,1.5vw,1.3rem);color:var(--soft);line-height:1.6}.dark p{color:#aaa4b2}
-.flow{margin-top:70px;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid rgba(255,255,255,.2);border-bottom:1px solid rgba(255,255,255,.2)}.flow div{padding:28px 18px;border-right:1px solid rgba(255,255,255,.12)}.flow div:last-child{border:0}.flow b{display:block;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#fff}.flow small{display:block;margin-top:10px;color:#8f8998}
-.system{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:55px}.system-card{border:1px solid var(--line);padding:28px;min-height:290px;position:relative;overflow:hidden;background:#faf9fb}.system-card:nth-child(2){background:linear-gradient(135deg,#faf9fb,#f3effa)}.system-card .num{font-size:11px;letter-spacing:.16em;color:var(--muted)}.system-card h3{font-family:Manrope;font-size:2rem;margin:50px 0 12px;letter-spacing:-.04em}.system-card p{font-size:1rem;margin:0}.pulse{position:absolute;width:190px;height:190px;border-radius:50%;border:1px solid rgba(217,60,152,.3);right:-50px;bottom:-70px}.pulse:after{content:"";position:absolute;inset:25px;border:1px solid rgba(107,63,212,.3);border-radius:50%}
-.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.15);margin-top:65px}.metric{padding:36px 28px;background:var(--ink)}.metric strong{font-family:Manrope;font-size:clamp(3rem,6vw,6rem);line-height:1;letter-spacing:-.07em}.metric span{display:block;color:#aaa4b2;margin-top:12px;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
-.end{min-height:80vh;display:grid;place-items:center;text-align:center;padding:80px 7vw}.end img{width:min(210px,55vw);margin:auto}.end h2{font-family:Manrope;font-size:clamp(3rem,7vw,7rem);letter-spacing:-.07em;margin:35px 0 15px}.end p{color:var(--soft)}
-.reveal{opacity:0;transform:translateY(35px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.2,1)}.reveal.on{opacity:1;transform:none}
-@media(max-width:850px){.top{padding:18px}.top img{width:110px}.hero{padding:110px 22px 70px}.hero-grid{grid-template-columns:1fr;gap:55px}.hero h1{font-size:clamp(4.5rem,20vw,7rem)}.preview{width:100%}.scene{padding:110px 22px}.flow,.system,.metrics{grid-template-columns:1fr}.flow div{border-right:0;border-bottom:1px solid rgba(255,255,255,.12)}.system-card{min-height:240px}}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal{opacity:1;transform:none;transition:none}.preview-frame img{transition:none}}
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header class="top"><a href="../"><img src="../assets/flamyn-go-logo.png" alt="FLAMYNGo"></a><span>MAX / Experimental Experience</span></header>
+<nav class="progress" aria-label="Experience sections">
+  <i class="active" title="Hero"></i><i title="Problem"></i><i title="System"></i><i title="Digital"></i><i title="Live"></i><i title="End"></i>
+</nav>
 <main>
-<section class="hero stage">
-<div class="hero-grid">
-<div class="hero-copy reveal"><p class="eyebrow">Fast Logistics &amp; Alert Medication · YAN Network</p><h1>Connect.<br><em>Alert.</em><br>Move.</h1><p class="sub">What happens when a medication trolley stops being just a trolley — and becomes part of a connected system?</p><p class="meta">Hospital Yan · Innovation Experience</p></div>
-<div class="preview reveal"><div class="preview-frame"><span class="preview-label">System / Physical</span><img src="../assets/physical/trolley-diagram-rendered.jpg" alt="FLAMYNGo systematic medication trolley concept"><span class="preview-index">01 / 03</span><span class="signal"></span></div></div>
-</div><div class="scroll-cue"><i></i>Scroll to enter the system</div>
+<section class="hero stage" data-scene>
+  <div class="hero-grid">
+    <div class="hero-copy">
+      <p class="eyebrow">Fast Logistics &amp; Alert Medication · YAN Network</p>
+      <h1>Connect.<br><em>Alert.</em><br>Move.</h1>
+      <p class="sub">What happens when a medication trolley stops being just a trolley — and becomes part of a connected system?</p>
+      <p class="meta">Hospital Yan · Innovation Experience</p>
+    </div>
+    <div class="preview">
+      <div class="preview-frame">
+        <span class="preview-label">System / Physical</span>
+        <img src="../assets/physical/trolley-diagram-rendered.jpg" alt="FLAMYNGo systematic medication trolley concept">
+        <span class="preview-index">01 / 03</span><span class="signal"></span>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-cue"><i></i>Scroll to enter the system</div>
 </section>
-<section class="scene"><div class="scene-inner reveal"><span class="kicker">01 / The problem</span><h2>Medication logistics<br>should not depend on <span>guesswork.</span></h2><p>Before FLAMYNGo, the workflow depended heavily on physical checking, manual status updates and uncertainty around where the trolley was in its journey.</p><div class="flow"><div><b>Storage</b><small>Mixed physical arrangement</small></div><div><b>Check</b><small>Manual verification</small></div><div><b>Status</b><small>Limited visibility</small></div><div><b>Repeat</b><small>Physical follow-up</small></div></div></div></section>
-<section class="scene dark"><div class="scene-inner reveal"><span class="kicker">02 / The break</span><h2>So we changed<br>the <span>system.</span></h2><p>Not just the container. Not just the software. FLAMYNGo connects both — physical organisation and digital visibility — into one workflow.</p><div class="system"><article class="system-card"><span class="num">01 / PHYSICAL</span><h3>Systematic trolley</h3><p>Three separated medication zones designed around how floor stock is handled.</p><span class="pulse"></span></article><article class="system-card"><span class="num">02 / DIGITAL</span><h3>Real-time alert</h3><p>One QR-driven workflow connects ward and pharmacy status updates.</p><span class="pulse"></span></article></div></div></section>
-<section class="scene"><div class="scene-inner reveal"><span class="kicker">03 / Digital signal</span><h2>One scan.<br>A <span>visible</span> status.</h2><p>The QR becomes the bridge between the physical trolley and the digital workflow: Ward → Pharmacy → Ward.</p><div class="preview-frame" style="margin-top:55px;aspect-ratio:16/9"><span class="preview-label">System / Digital</span><img src="../assets/digital/ward-status-ui.png" alt="FLAMYNGo ward status interface"><span class="preview-index">02 / 03</span></div></div></section>
-<section class="scene dark"><div class="scene-inner reveal"><span class="kicker">04 / Live data</span><h2>Every movement<br>leaves a <span>trace.</span></h2><p>The system turns individual scans into an operational timeline — making status, timestamps and movement visible across the workflow.</p><div class="metrics"><div class="metric"><strong>62</strong><span>Movement records</span></div><div class="metric"><strong>100%</strong><span>Charter compliance</span></div><div class="metric"><strong>6+</strong><span>Wards / units</span></div></div><div class="preview-frame" style="margin-top:28px;aspect-ratio:16/8"><span class="preview-label">System / Dashboard</span><img src="../assets/evidence/monitoring-dashboard.png" alt="FLAMYNGo monitoring dashboard"><span class="preview-index">03 / 03</span></div></div></section>
-<section class="end"><div class="reveal"><img src="../assets/flamyn-go-logo.png" alt="FLAMYNGo"><h2>Connect. Alert. Move.</h2><p>FLAMYNGo MAX — an experimental direction for the innovation showcase.</p></div></section>
+
+<section class="scene" data-scene>
+  <div class="scene-inner">
+    <span class="kicker">01 / The problem</span>
+    <h2>Medication logistics<br>should not depend on <span>guesswork.</span></h2>
+    <p>Before FLAMYNGo, the workflow depended heavily on physical checking, manual status updates and uncertainty around where the trolley was in its journey.</p>
+    <div class="flow">
+      <div><b>Storage</b><small>Mixed physical arrangement</small></div>
+      <div><b>Check</b><small>Manual verification</small></div>
+      <div><b>Status</b><small>Limited visibility</small></div>
+      <div><b>Repeat</b><small>Physical follow-up</small></div>
+    </div>
+  </div>
+</section>
+
+<section class="scene dark" data-scene>
+  <div class="scene-inner">
+    <span class="kicker">02 / The break</span>
+    <h2>So we changed<br>the <span>system.</span></h2>
+    <p>Not just the container. Not just the software. FLAMYNGo connects both — physical organisation and digital visibility — into one workflow.</p>
+    <div class="system">
+      <article class="system-card"><span class="num">01 / PHYSICAL</span><h3>Systematic trolley</h3><p>Three separated medication zones designed around how floor stock is handled.</p><span class="pulse"></span></article>
+      <article class="system-card"><span class="num">02 / DIGITAL</span><h3>Real-time alert</h3><p>One QR-driven workflow connects ward and pharmacy status updates.</p><span class="pulse"></span></article>
+    </div>
+  </div>
+</section>
+
+<section class="scene signal-section" data-scene>
+  <div class="scene-inner">
+    <span class="kicker">03 / Digital signal</span>
+    <h2>One scan.<br>A <span>visible</span> status.</h2>
+    <p>The QR becomes the bridge between the physical trolley and the digital workflow: Ward → Pharmacy → Ward.</p>
+    <div class="signal-stage">
+      <span class="signal-tag">Physical → digital</span>
+      <div class="scan-ring" aria-hidden="true"></div>
+      <div class="scan-line" aria-hidden="true"></div>
+      <div class="device preview-frame">
+        <span class="preview-label">System / Digital</span>
+        <img src="../assets/digital/ward-status-ui.png" alt="FLAMYNGo ward status interface">
+        <span class="preview-index">02 / 03</span>
+      </div>
+      <span class="signal-tag right">Status / notification</span>
+    </div>
+  </div>
+</section>
+
+<section class="scene dark" data-scene>
+  <div class="scene-inner">
+    <span class="kicker">04 / Live data</span>
+    <h2>Every movement<br>leaves a <span>trace.</span></h2>
+    <p>The system turns individual scans into an operational timeline — making status, timestamps and movement visible across the workflow.</p>
+    <div class="metrics">
+      <div class="metric"><strong data-count="62">0</strong><span>Movement records</span></div>
+      <div class="metric"><strong data-count="100" data-suffix="%">0%</strong><span>Charter compliance</span></div>
+      <div class="metric"><strong data-count="6" data-suffix="+">0+</strong><span>Wards / units</span></div>
+    </div>
+    <div class="dashboard preview-frame">
+      <span class="preview-label">System / Dashboard</span>
+      <img src="../assets/evidence/monitoring-dashboard.png" alt="FLAMYNGo monitoring dashboard">
+      <span class="preview-index">03 / 03</span>
+    </div>
+  </div>
+</section>
+
+<section class="end" data-scene>
+  <div>
+    <img src="../assets/flamyn-go-logo.png" alt="FLAMYNGo">
+    <h2>Connect. Alert. Move.</h2>
+    <p>FLAMYNGo MAX — an experimental direction for the innovation showcase.</p>
+  </div>
+</section>
 </main>
-<script>const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on')}),{threshold:.16});document.querySelectorAll('.reveal').forEach(e=>io.observe(e));</script>
-</body></html>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
