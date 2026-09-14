@@ -95,4 +95,167 @@
       requestAnimationFrame(step);
     });
   }
+
+  /* ---------- Hero video showcase (carousel + drag-to-scroll) ---------- */
+  var showcase = document.querySelector("[data-showcase]");
+  if (showcase) {
+    var viewport = showcase.querySelector("[data-showcase-viewport]");
+    var track = showcase.querySelector("[data-showcase-track]");
+    var dotsHost = showcase.querySelector("[data-showcase-dots]");
+    var slides = Array.prototype.slice.call(track.children);
+
+    function goToSlide(slide) {
+      // Smoothness comes from CSS `scroll-behavior` on the track (incl. the
+      // reduced-motion override) - passing behavior:"smooth" here as a JS
+      // option instead can leak into the document's own scroll in Chromium
+      // when html{scroll-behavior:smooth} is set, scrolling the whole page.
+      //
+      // Belt-and-braces guard: some Chromium versions still nudge the outer
+      // page's scroll position while a nested container smooth-scrolls after
+      // a user click (observed here even with no scrollIntoView/window.scrollTo
+      // call anywhere in the path). Pin the page scroll position for the
+      // duration of the slide animation so that drift is corrected immediately
+      // rather than left visible.
+      var pageY = window.scrollY;
+      var guardUntil = Date.now() + 500;
+      function guard() {
+        if (window.scrollY !== pageY) { window.scrollTo(0, pageY); }
+        if (Date.now() < guardUntil) { requestAnimationFrame(guard); }
+      }
+      requestAnimationFrame(guard);
+      track.scrollTo({ left: slide.offsetLeft });
+    }
+
+    // Plain buttons + aria-current, not role="tab"/"tablist": these are carousel
+    // indicators, not real tabs, and Chromium auto-scrolls the page to reveal a
+    // newly-aria-selected "tab" - a real bug here since the dots never move.
+    slides.forEach(function (slide, i) {
+      var dot = document.createElement("button");
+      dot.type = "button";
+      dot.setAttribute("aria-label", "Slide " + (i + 1) + " of " + slides.length);
+      if (i === 0) { dot.classList.add("is-active"); dot.setAttribute("aria-current", "true"); }
+      dot.addEventListener("click", function () { goToSlide(slide); });
+      dotsHost.appendChild(dot);
+    });
+    var dots = Array.prototype.slice.call(dotsHost.children);
+
+    function setActiveDot(index) {
+      dots.forEach(function (d, i) {
+        var active = i === index;
+        d.classList.toggle("is-active", active);
+        if (active) { d.setAttribute("aria-current", "true"); } else { d.removeAttribute("aria-current"); }
+      });
+    }
+
+    if ("IntersectionObserver" in window) {
+      var slideSpy = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting && entry.intersectionRatio > 0.6) {
+              setActiveDot(slides.indexOf(entry.target));
+            }
+          });
+        },
+        { root: track, threshold: [0.6] }
+      );
+      slides.forEach(function (s) { slideSpy.observe(s); });
+    }
+
+    // Desktop click-and-drag navigation (touch devices already get native swipe via scroll-snap).
+    var isDown = false, startX = 0, startScroll = 0, moved = false;
+    track.addEventListener("pointerdown", function (e) {
+      if (e.pointerType === "touch") { return; }
+      isDown = true; moved = false;
+      startX = e.clientX; startScroll = track.scrollLeft;
+      track.classList.add("is-dragging");
+      track.setPointerCapture(e.pointerId);
+    });
+    track.addEventListener("pointermove", function (e) {
+      if (!isDown) { return; }
+      var dx = e.clientX - startX;
+      if (Math.abs(dx) > 4) { moved = true; }
+      track.scrollLeft = startScroll - dx;
+    });
+    function endDrag(e) {
+      if (!isDown) { return; }
+      isDown = false;
+      track.classList.remove("is-dragging");
+      var closest = slides.reduce(function (best, slide) {
+        var d = Math.abs(slide.offsetLeft - track.scrollLeft);
+        return d < best.d ? { slide: slide, d: d } : best;
+      }, { slide: slides[0], d: Infinity });
+      goToSlide(closest.slide);
+    }
+    track.addEventListener("pointerup", endDrag);
+    track.addEventListener("pointerleave", endDrag);
+    track.addEventListener("click", function (e) {
+      if (moved) { e.preventDefault(); e.stopPropagation(); }
+    }, true);
+  }
+
+  /* ---------- Video modal ---------- */
+  var modal = document.querySelector("[data-video-modal]");
+  if (modal) {
+    var modalBody = modal.querySelector("[data-video-modal-body]");
+    var lastFocused = null;
+
+    function buildPlayer(slide) {
+      var src = slide.getAttribute("data-video-src");
+      var type = slide.getAttribute("data-video-type") || "mp4";
+      var title = slide.querySelector(".showcase-title");
+      var titleText = title ? title.textContent : "Video";
+
+      if (!src) {
+        var wrap = document.createElement("div");
+        wrap.className = "video-loader";
+        wrap.innerHTML =
+          '<div class="video-loader-spinner" role="status" aria-label="Loading"></div>' +
+          '<p class="video-loader-title">' + titleText + '</p>' +
+          '<p>Video sebenar akan dimuat naik tidak lama lagi.</p>';
+        return wrap;
+      }
+      if (type === "youtube" || type === "vimeo") {
+        var iframe = document.createElement("iframe");
+        iframe.src = src;
+        iframe.title = titleText;
+        iframe.allow = "autoplay; fullscreen; picture-in-picture";
+        iframe.allowFullscreen = true;
+        return iframe;
+      }
+      var video = document.createElement("video");
+      video.src = src;
+      video.controls = true;
+      video.autoplay = true;
+      var poster = slide.getAttribute("data-poster-src");
+      if (poster) { video.poster = poster; }
+      return video;
+    }
+
+    function openModal(slide) {
+      lastFocused = document.activeElement;
+      modalBody.innerHTML = "";
+      modalBody.appendChild(buildPlayer(slide));
+      modal.hidden = false;
+      modal.querySelector(".video-modal-close").focus();
+      document.body.style.overflow = "hidden";
+    }
+    function closeModal() {
+      modal.hidden = true;
+      modalBody.innerHTML = "";
+      document.body.style.overflow = "";
+      if (lastFocused) { lastFocused.focus(); }
+    }
+
+    document.querySelectorAll(".showcase-play").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        openModal(btn.closest(".showcase-slide"));
+      });
+    });
+    modal.querySelectorAll("[data-video-modal-close]").forEach(function (el) {
+      el.addEventListener("click", closeModal);
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && !modal.hidden) { closeModal(); }
+    });
+  }
 })();
