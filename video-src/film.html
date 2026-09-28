@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<title>FLAMYNGo teaser — render source</title>
+<!--
+  Source for the FLAMYNGo teaser videos. Every frame is a pure function of
+  time: render.mjs calls window.renderAt(seconds) and screenshots the stage,
+  so there are no CSS transitions or animations here.
+  Timelines: ?tl=teaser | physical | digital | live
+-->
+<link href="fonts/fonts.css" rel="stylesheet">
+<style>
+  :root {
+    --ink: #15131b; --ink-soft: #5c5566; --paper: #f5f0e6; --paper-2: #ece5d6;
+    --magenta: #d93c98; --pink: #e0195f; --purple: #6b3fd4; --navy: #2b0f5c; --gold: #e3a21a;
+    --red: #e0342b; --green: #1f9d57;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: #000; }
+  #stage {
+    position: relative; width: 1920px; height: 1080px; overflow: hidden;
+    background: var(--paper); color: var(--ink); font-family: "DM Sans", sans-serif;
+  }
+  /* static paper grain (static so it compresses well) */
+  #stage::before {
+    content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: .5;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .45  0 0 0 0 .38  0 0 0 0 .28  0 0 0 .22 0'/></filter><rect width='400' height='400' filter='url(%23n)'/></svg>");
+  }
+  #stage::after { /* vignette */
+    content: ""; position: absolute; inset: 0; z-index: 50; pointer-events: none;
+    background: radial-gradient(ellipse at center, rgba(0,0,0,0) 55%, rgba(60,40,20,.18) 100%);
+  }
+  .scene { position: absolute; inset: 0; z-index: 1; display: none; }
+  .abs { position: absolute; }
+  .h { font-family: Manrope, sans-serif; font-weight: 800; letter-spacing: -.035em; line-height: 1.02; }
+  .hand { font-family: Caveat, 'DM Sans', cursive; font-weight: 700; }
+  .kicker {
+    position: absolute; left: 120px; top: 96px; font: 700 26px/1 "DM Sans", sans-serif; letter-spacing: .18em;
+    text-transform: uppercase; color: var(--ink-soft); display: flex; gap: 18px; align-items: center;
+  }
+  .kicker b { color: #fff; background: var(--ink); padding: 8px 12px; letter-spacing: .06em; }
+  .mask { display: inline-block; overflow: hidden; vertical-align: bottom; padding-bottom: .08em; }
+  .mask > span { display: inline-block; }
+  .hl { position: relative; display: inline-block; z-index: 0; }
+  .hl::before {
+    content: ""; position: absolute; left: -.08em; right: -.08em; top: .52em; bottom: .02em; z-index: -1;
+    background: var(--hlc, #ffd84d); transform-origin: left center; transform: scaleX(var(--p, 0));
+    border-radius: 3px;
+  }
+  .card {
+    background: #fff; border-radius: 14px; box-shadow: 0 30px 70px rgba(40,25,10,.22), 0 4px 12px rgba(40,25,10,.12);
+    overflow: hidden;
+  }
+  .tape {
+    position: absolute; width: 150px; height: 40px; background: rgba(255,226,140,.78);
+    box-shadow: 0 2px 6px rgba(0,0,0,.08); z-index: 3;
+  }
+  svg.draw path, svg.draw ellipse, svg.draw line { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* ---------- captions (burned-in narration) ---------- */
+  #caption {
+    position: absolute; left: 140px; right: 140px; bottom: 54px; z-index: 40;
+    text-align: center; font: 500 38px/1.3 "DM Sans"; color: #fff;
+  }
+  #caption span { background: rgba(21,19,27,.86); padding: 8px 22px; box-decoration-break: clone; -webkit-box-decoration-break: clone; border-radius: 6px; }
+  #caption em { font-style: normal; color: #ff9fd0; }
+  #brandbug {
+    position: absolute; right: 56px; top: 50px; z-index: 40; font: 800 24px/1 Manrope; letter-spacing: -.02em;
+    color: var(--ink); opacity: .75;
+  }
+  #brandbug i { font-style: normal; color: var(--pink); }
+  #brandbug u { text-decoration: none; color: var(--navy); } #brandbug s { text-decoration: none; color: var(--gold); }
+  #wipe { position: absolute; inset: 0; z-index: 45; pointer-events: none; }
+  #wipe div { position: absolute; top: 0; bottom: 0; width: 100%; }
+
+  /* ---------- scene: hook ---------- */
+  .node {
+    position: absolute; width: 330px; height: 210px; border: 4px solid var(--ink); border-radius: 18px; background: #fff;
+    display: grid; place-items: center; text-align: center;
+  }
+  .node .h { font-size: 52px; }
+  .node small { display: block; font: 600 22px "DM Sans"; letter-spacing: .14em; color: var(--ink-soft); margin-top: 6px; text-transform: uppercase; }
+  .trolley-ic { position: absolute; width: 110px; height: 110px; }
+  .qmark { position: absolute; font: 800 150px/1 Manrope; color: var(--red); }
+
+  /* ---------- scene: problem ---------- */
+  .pcard { position: absolute; width: 470px; padding: 44px 40px 40px; background: #fffdf8; box-shadow: 0 24px 50px rgba(40,25,10,.18); }
+  .pcard .num { font: 800 120px/1 Manrope; letter-spacing: -.05em; color: var(--ink); }
+  .pcard .lbl { font: 600 32px/1.25 "DM Sans"; color: var(--ink-soft); margin-top: 14px; }
+  .pcard .tag { font: 700 20px "DM Sans"; letter-spacing: .16em; text-transform: uppercase; color: var(--red); margin-bottom: 18px; }
+
+  /* ---------- scene: idea ---------- */
+  .half { position: absolute; top: 300px; width: 660px; height: 470px; border-radius: 22px; padding: 56px; color: #fff; }
+  .half .t { font: 700 24px "DM Sans"; letter-spacing: .2em; text-transform: uppercase; opacity: .85; }
+  .half .h { font-size: 76px; margin-top: 22px; }
+  .half p { font: 500 30px/1.35 "DM Sans"; opacity: .92; margin: 24px 0 0; }
+  .plus { position: absolute; left: 50%; top: 535px; width: 110px; height: 110px; margin: -55px 0 0 -55px; border-radius: 50%; background: var(--ink); color: #fff; display: grid; place-items: center; font: 800 70px/1 Manrope; z-index: 3; }
+
+  /* ---------- scene: physical ---------- */
+  .callout { position: absolute; left: 1060px; width: 640px; }
+  .callout .l { font: 800 30px Manrope; color: #fff; display: inline-block; padding: 6px 16px; border-radius: 8px; }
+  .callout .h { font-size: 50px; margin-top: 14px; }
+  .callout p { font: 500 27px/1.35 "DM Sans"; color: var(--ink-soft); margin: 8px 0 0; }
+
+  /* ---------- scene: digital ---------- */
+  .step { position: absolute; top: 250px; width: 360px; text-align: center; }
+  .step .circle { width: 150px; height: 150px; margin: 0 auto; border-radius: 50%; background: #fff; border: 5px solid var(--ink); display: grid; place-items: center; font: 800 64px Manrope; }
+  .step .h { font-size: 46px; margin-top: 22px; }
+  .chip { display: inline-block; margin-top: 16px; font: 700 24px/1.3 "DM Sans"; padding: 10px 18px; border-radius: 999px; color: #fff; }
+  .ring { position: absolute; }
+
+  /* ---------- scene: live ---------- */
+  .stat { position: absolute; top: 700px; width: 520px; }
+  .stat .num { font: 800 132px/1 Manrope; letter-spacing: -.05em; }
+  .stat .lbl { font: 600 30px/1.3 "DM Sans"; color: var(--ink-soft); margin-top: 8px; }
+  .livebadge { display: inline-flex; align-items: center; gap: 12px; background: var(--green); color: #fff; font: 800 26px Manrope; letter-spacing: .12em; padding: 10px 20px; border-radius: 999px; }
+  .livebadge i { width: 14px; height: 14px; border-radius: 50%; background: #fff; display: block; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="brandbug">FLAM<i>Y</i><u>N</u><s>Go</s></div>
+
+  <!-- ===================== HOOK ===================== -->
+  <section class="scene" id="s-hook">
+    <div class="kicker" data-k="kicker"><b>FLAMYNGo</b> Hospital Yan · KIK 2026</div>
+    <svg class="abs" style="left:0;top:0" width="1920" height="1080" viewBox="0 0 1920 1080">
+      <path id="hook-path" d="M 520 600 C 760 430, 1160 770, 1400 600" stroke="#15131b" stroke-width="6" stroke-dasharray="4 22" fill="none" stroke-linecap="round"/>
+    </svg>
+    <div class="node" style="left:190px;top:495px" data-k="nodeA"><div><div class="h">Farmasi</div><small>Pharmacy</small></div></div>
+    <div class="node" style="left:1400px;top:495px" data-k="nodeB"><div><div class="h">Wad</div><small>Ward</small></div></div>
+    <svg class="trolley-ic" data-k="trolley" viewBox="0 0 100 100">
+      <rect x="18" y="14" width="64" height="60" rx="8" fill="#d93c98"/>
+      <rect x="26" y="24" width="48" height="12" rx="3" fill="#fff" opacity=".85"/>
+      <rect x="26" y="42" width="48" height="12" rx="3" fill="#fff" opacity=".85"/>
+      <rect x="34" y="4" width="32" height="8" rx="4" fill="#15131b"/>
+      <circle cx="30" cy="86" r="9" fill="#15131b"/><circle cx="70" cy="86" r="9" fill="#15131b"/>
+    </svg>
+    <div class="qmark" data-k="q1" style="left:900px;top:330px">?</div>
+    <div class="abs h" style="left:0;right:0;top:175px;text-align:center;font-size:104px" data-k="title">
+      <span class="mask"><span data-k="w1">Troli bergerak.</span></span>
+      <span class="mask"><span data-k="w2"><span class="hl" data-k="hl1" style="--hlc:#ff9fd0">Tetapi statusnya?</span></span></span>
+    </div>
+  </section>
+
+  <!-- ===================== PROBLEM ===================== -->
+  <section class="scene" id="s-problem">
+    <div class="kicker"><b>02</b> The Problem</div>
+    <div class="abs h" style="left:120px;top:170px;font-size:80px;max-width:1500px" data-k="ptitle">
+      Status troli bergantung pada <span class="hl" data-k="phl">telefon &amp; semakan manual.</span>
+    </div>
+    <div class="pcard" style="left:150px;top:430px" data-k="c1">
+      <div class="tape" style="left:160px;top:-18px;transform:rotate(-4deg)"></div>
+      <div class="tag">Kesilapan</div><div class="num" data-k="n1">1–3×</div><div class="lbl">kesilapan ubat<br>sebulan</div>
+    </div>
+    <div class="pcard" style="left:725px;top:430px" data-k="c2">
+      <div class="tape" style="left:160px;top:-18px;transform:rotate(3deg)"></div>
+      <div class="tag">Kerosakan</div><div class="num" data-k="n2">1–2×</div><div class="lbl">pecah / tumpah<br>sebulan</div>
+    </div>
+    <div class="pcard" style="left:1300px;top:430px" data-k="c3">
+      <div class="tape" style="left:160px;top:-18px;transform:rotate(-2deg)"></div>
+      <div class="tag">Masa</div><div class="num"><span data-k="n3">&gt;15</span> <span style="font-size:60px">min</span></div><div class="lbl">semakan farmasi<br>&amp; jururawat</div>
+    </div>
+    <svg class="abs draw" style="left:1240px;top:440px" width="600" height="220" viewBox="0 0 600 220">
+      <path data-k="circ3" pathLength="1" d="M 60 120 C 40 40, 330 10, 470 40 C 590 70, 560 180, 380 195 C 220 208, 60 190, 70 110" stroke="#e0342b" stroke-width="9"/>
+    </svg>
+    <div class="abs hand" style="left:1480px;top:800px;font-size:54px;color:var(--red);transform:rotate(-4deg)" data-k="note3">terlalu lama!</div>
+    <div class="abs" style="left:150px;top:830px;font:500 24px 'DM Sans';color:var(--ink-soft)" data-k="src">Baseline projek · Unit Kecemasan &amp; Wad Melor 1–4</div>
+  </section>
+
+  <!-- ===================== IDEA ===================== -->
+  <section class="scene" id="s-idea">
+    <div class="kicker"><b>03</b> The Innovation</div>
+    <div class="abs h" style="left:0;right:0;top:160px;text-align:center;font-size:92px" data-k="ititle">
+      <span class="mask"><span data-k="iw1">Satu inovasi.</span></span> <span class="mask"><span data-k="iw2"><span class="hl" data-k="ihl" style="--hlc:#ffd84d">Dua komponen.</span></span></span>
+    </div>
+    <div class="half" style="left:250px;background:var(--pink)" data-k="hA">
+      <div class="t">Physical</div><div class="h">Troli<br>Sistematik</div><p>Ubat disusun ikut kategori — bukan ikut kebiasaan.</p>
+    </div>
+    <div class="half" style="left:1010px;background:var(--purple)" data-k="hB">
+      <div class="t">Digital</div><div class="h">Notifikasi<br>Masa Nyata</div><p>Status troli kelihatan serta-merta, tanpa semakan fizikal.</p>
+    </div>
+    <div class="plus" data-k="plus">+</div>
+    <div class="abs" style="left:0;right:0;top:820px;text-align:center" data-k="qrline">
+      <span class="h" style="font-size:44px;background:var(--ink);color:#fff;padding:12px 26px;border-radius:12px;display:inline-flex;gap:18px;align-items:center">
+        <svg width="46" height="46" viewBox="0 0 10 10"><path fill="#fff" d="M0 0h4v4H0zM1 1v2h2V1zM6 0h4v4H6zM7 1v2h2V1zM0 6h4v4H0zM1 7v2h2V7zM5 5h1v1H5zM7 5h1v2H7zM5 7h2v1H5zM8 8h2v2H8zM6 9h1v1H6zM9 5h1v2H9z"/></svg>
+        Satu QR. Satu aliran kerja.
+      </span>
+    </div>
+  </section>
+
+  <!-- ===================== PHYSICAL ===================== -->
+  <section class="scene" id="s-physical">
+    <div class="kicker"><b>04</b> Physical</div>
+    <div class="abs" style="left:250px;top:150px;width:700px;height:812px" data-k="trolleyWrap">
+      <div class="card" style="width:700px;height:812px;border-radius:18px"><img src="../assets/physical/trolley-diagram-rendered.jpg" style="width:700px;display:block"></div>
+      <svg class="abs draw" style="left:0;top:0" width="700" height="812" viewBox="0 0 1200 1392">
+        <ellipse data-k="eA" pathLength="1" cx="600" cy="610" rx="300" ry="190" stroke="#e0195f" stroke-width="12"/>
+        <ellipse data-k="eB" pathLength="1" cx="590" cy="850" rx="310" ry="190" stroke="#6b3fd4" stroke-width="12"/>
+        <ellipse data-k="eC" pathLength="1" cx="578" cy="1130" rx="320" ry="210" stroke="#e3a21a" stroke-width="12"/>
+      </svg>
+    </div>
+    <div class="abs h" style="left:1060px;top:160px;font-size:64px;width:800px" data-k="phTitle">Direka ikut <span class="hl" data-k="phHl">kategori ubat.</span></div>
+    <div class="callout" style="top:350px" data-k="cA"><span class="l" style="background:var(--pink)">A</span><div class="h">Oral solids</div><p>Tablet &amp; ubat pulangan — berasingan.</p></div>
+    <div class="callout" style="top:545px" data-k="cB"><span class="l" style="background:var(--purple)">B</span><div class="h">IV &amp; injections</div><p>Ruang khusus untuk ubat suntikan.</p></div>
+    <div class="callout" style="top:740px" data-k="cC"><span class="l" style="background:var(--gold)">C</span><div class="h">Liquids &amp; fridge</div><p>Cecair &amp; ubat berat diasingkan.</p></div>
+    <div class="abs" style="left:1060px;top:250px;font:700 25px 'DM Sans';color:var(--ink-soft);letter-spacing:.04em" data-k="spec">Koper FLAMYNGo™ · 40 × 35 × 25 cm · fabrikasi bersama KEDA</div>
+  </section>
+
+  <!-- ===================== DIGITAL ===================== -->
+  <section class="scene" id="s-digital">
+    <div class="kicker"><b>05</b> Digital</div>
+    <div class="abs h" style="left:120px;top:160px;font-size:76px" data-k="dTitle">Satu QR. <span class="hl" data-k="dHl" style="--hlc:#c9b6ff">Tiga status.</span></div>
+    <svg class="abs" style="left:0;top:0" width="1920" height="1080" viewBox="0 0 1920 1080">
+      <line data-k="l1" x1="370" y1="400" x2="620" y2="400" stroke="#15131b" stroke-width="6" stroke-dasharray="1 18" stroke-linecap="round"/>
+      <line data-k="l2" x1="760" y1="400" x2="1010" y2="400" stroke="#15131b" stroke-width="6" stroke-dasharray="1 18" stroke-linecap="round"/>
+    </svg>
+    <div class="step" style="left:115px" data-k="st1"><div class="circle" data-k="cc1">1</div><div class="h">Wad</div><div class="chip" style="background:var(--pink)" data-k="ch1">Troli dihantar</div></div>
+    <div class="step" style="left:505px" data-k="st2"><div class="circle" data-k="cc2">2</div><div class="h">Farmasi</div><div class="chip" style="background:var(--purple)" data-k="ch2">Pengisian ubat selesai</div></div>
+    <div class="step" style="left:895px" data-k="st3"><div class="circle" data-k="cc3">3</div><div class="h">Wad</div><div class="chip" style="background:var(--green)" data-k="ch3">Troli ubat telah diambil</div></div>
+    <div class="abs" style="left:150px;top:700px;display:flex;gap:30px;align-items:center" data-k="esc">
+      <svg width="130" height="130" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="42" fill="#fff" stroke="#e7dfd0" stroke-width="10"/>
+        <circle data-k="escRing" cx="50" cy="50" r="42" fill="none" stroke="#e0342b" stroke-width="10" pathLength="1" stroke-dasharray="1 1" transform="rotate(-90 50 50)"/>
+        <text x="50" y="60" text-anchor="middle" font-family="Manrope" font-weight="800" font-size="28" fill="#15131b">15</text>
+      </svg>
+      <div><div class="h" style="font-size:46px">Eskalasi automatik</div><div style="font:500 28px 'DM Sans';color:var(--ink-soft);margin-top:6px">jika status tidak disahkan dalam 15 minit</div></div>
+    </div>
+    <div class="abs" style="left:1290px;top:110px;width:480px" data-k="phone">
+      <div style="background:#15131b;border-radius:48px;padding:16px;box-shadow:0 40px 80px rgba(40,25,10,.3)">
+        <div style="border-radius:34px;overflow:hidden;background:#fff"><img src="../assets/digital/ward-status-ui.png" style="width:448px;display:block"></div>
+      </div>
+      <div class="abs hand" style="left:-330px;top:690px;font-size:48px;color:var(--purple);transform:rotate(-6deg);width:320px;line-height:1" data-k="phNote">paparan wad, kemaskini automatik →</div>
+    </div>
+  </section>
+
+  <!-- ===================== LIVE ===================== -->
+  <section class="scene" id="s-live">
+    <div class="kicker"><b>06</b> Live Data</div>
+    <div class="abs h" style="left:120px;top:160px;font-size:78px" data-k="lTitle">Bukan konsep. <span class="hl" data-k="lHl" style="--hlc:#9ee6b8">Sistem sebenar.</span></div>
+    <div class="abs" style="left:120px;top:300px;width:1680px;height:360px" data-k="dashWrap">
+      <div class="card" style="width:1680px;height:360px;position:relative">
+        <img src="../assets/evidence/monitoring-dashboard.png" style="width:1680px;display:block" data-k="dashImg">
+      </div>
+      <svg class="abs draw" style="left:0;top:0;overflow:visible" width="1680" height="430" viewBox="0 0 1680 430">
+        <ellipse data-k="eLive" pathLength="1" cx="1638" cy="100" rx="95" ry="48" stroke="#e0342b" stroke-width="8"/>
+      </svg>
+      <div class="abs hand" style="left:1300px;top:-70px;font-size:50px;color:var(--red);transform:rotate(-3deg)" data-k="liveNote">data sebenar ↘</div>
+    </div>
+    <div class="stat" style="left:150px" data-k="s1"><div class="num" style="color:var(--pink)"><span data-k="v1">0</span>%</div><div class="lbl">pematuhan piagam ≤ 4 jam</div></div>
+    <div class="stat" style="left:720px" data-k="s2"><div class="num" style="color:var(--purple)"><span data-k="v2">0</span></div><div class="lbl">rekod pergerakan troli</div></div>
+    <div class="stat" style="left:1290px" data-k="s3"><div class="num" style="color:var(--gold)"><span data-k="v3">0</span>+</div><div class="lbl">wad / unit terlibat</div></div>
+    <div class="abs" style="left:150px;top:900px;font:500 24px 'DM Sans';color:var(--ink-soft)" data-k="lsrc">Data awal fasa pilot · 15–21 Ogos 2026</div>
+  </section>
+
+  <!-- ===================== OUTRO ===================== -->
+  <section class="scene" id="s-outro" style="background:#fff">
+    <img src="../assets/flamyn-go-logo.png" class="abs" style="left:460px;top:130px;width:1000px" data-k="logo">
+    <div class="abs h" style="left:0;right:0;top:700px;text-align:center;font-size:96px" data-k="tag">
+      <span class="mask"><span data-k="t1">Connect.</span></span>
+      <span class="mask"><span data-k="t2" style="color:var(--magenta)">Alert.</span></span>
+      <span class="mask"><span data-k="t3">Move.</span></span>
+    </div>
+    <div class="abs" style="left:0;right:0;top:850px;text-align:center;font:600 30px 'DM Sans';color:var(--ink-soft);letter-spacing:.04em" data-k="foot">KIK 2026 · Hospital Yan · adzry.github.io/FLAMYNGo</div>
+  </section>
+
+  <div id="wipe"><div data-k="wipeA" style="background:var(--pink)"></div><div data-k="wipeB" style="background:var(--purple)"></div></div>
+  <div id="caption"><span data-k="capText"></span></div>
+</div>
+
+<script>
+(function () {
+  var K = {};
+  document.querySelectorAll("[data-k]").forEach(function (el) { K[el.getAttribute("data-k")] = el; });
+
+  /* ---------- helpers ---------- */
+  function clamp(x) { return x < 0 ? 0 : x > 1 ? 1 : x; }
+  function prog(t, a, b) { return clamp((t - a) / (b - a)); }
+  var ease = {
+    out: function (x) { return 1 - Math.pow(1 - x, 3); },
+    inOut: function (x) { return x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; },
+    back: function (x) { var c = 1.7; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); }
+  };
+  function E(t, a, b, fn) { return (fn || ease.out)(prog(t, a, b)); }
+  function set(k, css) { var el = K[k]; for (var p in css) el.style[p] = css[p]; }
+  /* fade + rise in at a, optional fade out at out */
+  function rise(k, t, a, dur, dist) {
+    var p = E(t, a, a + (dur || .6));
+    set(k, { opacity: p, transform: "translateY(" + ((1 - p) * (dist == null ? 40 : dist)) + "px)" });
+  }
+  function pop(k, t, a, dur, extra) {
+    var p = E(t, a, a + (dur || .5), ease.back);
+    set(k, { opacity: clamp(p * 1.5), transform: (extra || "") + " scale(" + (0.6 + 0.4 * p) + ")" });
+  }
+  function maskIn(k, t, a) { var p = E(t, a, a + .55); set(k, { transform: "translateY(" + ((1 - p) * 110) + "%)" }); }
+  function hl(k, t, a) { K[k].style.setProperty("--p", E(t, a, a + .6, ease.inOut)); }
+  function drawPath(k, t, a, dur) { var p = E(t, a, a + (dur || .8), ease.inOut); set(k, { strokeDasharray: "1 1", strokeDashoffset: 1 - p, opacity: p > 0 ? 1 : 0 }); }
+  function count(k, t, a, dur, to, dec) { var p = E(t, a, a + (dur || 1.2)); K[k].textContent = (to * p).toFixed(dec || 0); }
+  function bezier(p, a, b, c, d) { var u = 1 - p; return u*u*u*a + 3*u*u*p*b + 3*u*p*p*c + p*p*p*d; }
+
+  /* ---------- scenes: each gets local time t and duration D ---------- */
+  var SCENES = {
+    hook: { id: "s-hook", cap: [[0.3, "Setiap hari, troli ubat bergerak antara <em>farmasi</em> dan <em>wad</em>."], [3.6, "Tapi di mana troli itu sekarang? Dah siap diisi… atau belum?"]],
+      render: function (t) {
+        rise("kicker", t, .1, .5, 20);
+        pop("nodeA", t, .2); pop("nodeB", t, .45);
+        maskIn("w1", t, 1.0); maskIn("w2", t, 2.2); hl("hl1", t, 2.8);
+        var p = E(t, .8, 4.2, ease.inOut);
+        var x = bezier(p, 520, 760, 1160, 1400), y = bezier(p, 600, 430, 770, 600);
+        var wob = Math.sin(t * 18) * 2 * (p > 0 && p < 1 ? 1 : 0);
+        set("trolley", { left: (x - 55) + "px", top: (y - 100 + wob) + "px", opacity: E(t, .6, 1) });
+        // the trolley goes "dark": faded with question marks
+        var lost = E(t, 4.4, 5.2);
+        set("trolley", { filter: "grayscale(" + lost + ") opacity(" + (1 - .55 * lost) + ")" });
+        var q = E(t, 4.6, 5.1, ease.back);
+        set("q1", { left: (x - 30) + "px", top: (y - 300) + "px", opacity: clamp(q), transform: "scale(" + (.5 + .5 * q) + ") rotate(" + (Math.sin(t * 3) * 6) + "deg)" });
+      } },
+
+    problem: { id: "s-problem", cap: [[0.3, "Sebelum ini, ubat bercampur dalam raga — semuanya disemak secara manual."], [5.2, "Hasilnya? Kesilapan, kerosakan… dan masa yang terbuang."]],
+      render: function (t) {
+        rise("ptitle", t, .2, .7); hl("phl", t, 1.2);
+        ["c1", "c2", "c3"].forEach(function (k, i) {
+          var p = E(t, 2.4 + i * .6, 3.1 + i * .6, ease.back), r = [-2.5, 1.5, -1][i];
+          set(k, { opacity: clamp(p * 1.4), transform: "translateY(" + (1 - p) * 120 + "px) rotate(" + r * p + "deg)" });
+        });
+        drawPath("circ3", t, 5.6, .9);
+        var n = E(t, 6.3, 6.8, ease.back); set("note3", { opacity: clamp(n), transform: "rotate(-4deg) scale(" + (.6 + .4 * n) + ")" });
+        rise("src", t, 7.2, .6, 10);
+      } },
+
+    idea: { id: "s-idea", cap: [[0.3, "Jadi kami bina <em>FLAMYNGo</em> — Fast Logistics &amp; Alert Medication."], [5.0, "Troli fizikal tersusun + notifikasi digital, dalam satu aliran kerja."]],
+      render: function (t) {
+        maskIn("iw1", t, .2); maskIn("iw2", t, .9); hl("ihl", t, 1.4);
+        var a = E(t, 2.0, 2.9, ease.inOut), b = E(t, 2.3, 3.2, ease.inOut);
+        set("hA", { opacity: a, transform: "translateX(" + (-(1 - a) * 500) + "px) rotate(" + (-1.5 * a) + "deg)" });
+        set("hB", { opacity: b, transform: "translateX(" + ((1 - b) * 500) + "px) rotate(" + (1.5 * b) + "deg)" });
+        pop("plus", t, 3.3, .5);
+        rise("qrline", t, 5.4, .7);
+      } },
+
+    physical: { id: "s-physical", cap: [[0.3, "Komponen pertama: <em>Koper FLAMYNGo™</em>, troli yang disusun semula."], [4.6, "Tiga zon kod warna — oral, IV dan cecair tak lagi bercampur."]],
+      render: function (t, D) {
+        var z = E(t, 0, D, function (x) { return x; });
+        var w = E(t, .1, 1.0);
+        set("trolleyWrap", { opacity: w, transform: "translateY(" + (1 - w) * 80 + "px) rotate(" + (-1.2 * w) + "deg) scale(" + (1 + .03 * z) + ")" });
+        rise("phTitle", t, .6, .7); hl("phHl", t, 1.3);
+        rise("spec", t, 1.8, .6, 16);
+        [["eA", "cA"], ["eB", "cB"], ["eC", "cC"]].forEach(function (pair, i) {
+          var s = 3.4 + i * 1.8;
+          drawPath(pair[0], t, s, .7);
+          var p = E(t, s + .2, s + .8);
+          set(pair[1], { opacity: p, transform: "translateX(" + (1 - p) * 60 + "px)" });
+        });
+      } },
+
+    digital: { id: "s-digital", cap: [[0.3, "Komponen kedua: satu kod QR yang diimbas di setiap peringkat."], [5.0, "Setiap imbasan rekod masa automatik — wad terus dimaklumkan."], [9.0, "Tiada respons dalam 15 minit? Sistem hantar peringatan sendiri."]],
+      render: function (t) {
+        rise("dTitle", t, .2, .7); hl("dHl", t, .9);
+        [1, 2, 3].forEach(function (i) {
+          var s = 1.4 + (i - 1) * 1.5;
+          pop("st" + i, t, s, .5);
+          var pulse = prog(t, s + .4, s + 1.0);
+          var ring = pulse > 0 && pulse < 1 ? "0 0 0 " + (pulse * 34) + "px rgba(217,60,152," + (0.45 * (1 - pulse)) + ")" : "none";
+          set("cc" + i, { boxShadow: ring, background: t > s + .4 ? "#15131b" : "#fff", color: t > s + .4 ? "#fff" : "#15131b" });
+          pop("ch" + i, t, s + .6, .45);
+        });
+        set("l1", { opacity: E(t, 2.3, 2.7) }); set("l2", { opacity: E(t, 3.8, 4.2) });
+        K.l1.style.strokeDashoffset = -t * 30; K.l2.style.strokeDashoffset = -t * 30;
+        var ph = E(t, 2.0, 3.0);
+        set("phone", { opacity: ph, transform: "translateY(" + (1 - ph) * 200 + "px) rotate(" + (3 * ph) + "deg)" });
+        rise("phNote", t, 6.2, .6, 14);
+        rise("esc", t, 8.6, .7);
+        var r = E(t, 9.0, 11.6, function (x) { return x; });
+        set("escRing", { strokeDashoffset: 1 - r });
+      } },
+
+    live: { id: "s-live", cap: [[0.3, "Dan ini bukan konsep — sistem ini <em>sedang beroperasi</em>."], [5.4, "Minggu pertama pilot: 100% pematuhan piagam · 62 rekod · 6+ wad."]],
+      render: function (t, D) {
+        rise("lTitle", t, .2, .7); hl("lHl", t, .9);
+        var d = E(t, 1.0, 1.9);
+        set("dashWrap", { opacity: d, transform: "translateY(" + (1 - d) * 90 + "px) rotate(" + (-.6 * d) + "deg)" });
+        var pan = E(t, 1.9, D, function (x) { return x; });
+        set("dashImg", { transform: "scale(" + (1 + .04 * pan) + ")", transformOrigin: "70% 20%" });
+        drawPath("eLive", t, 2.9, .7); rise("liveNote", t, 3.4, .5, 10);
+        rise("s1", t, 5.4, .5); count("v1", t, 5.5, 1.3, 100);
+        rise("s2", t, 6.0, .5); count("v2", t, 6.1, 1.3, 62);
+        rise("s3", t, 6.6, .5); count("v3", t, 6.7, 1.1, 6);
+        rise("lsrc", t, 7.6, .6, 10);
+      } },
+
+    outro: { id: "s-outro", cap: [[0.6, "FLAMYNGo — dari farmasi ke wad, setiap pergerakan kelihatan."]],
+      render: function (t) {
+        var l = E(t, .1, 1.0, ease.back);
+        set("logo", { opacity: clamp(l * 1.3), transform: "scale(" + (.85 + .15 * l) + ")" });
+        maskIn("t1", t, 1.0); maskIn("t2", t, 1.35); maskIn("t3", t, 1.7);
+        rise("foot", t, 2.3, .6, 10);
+      } }
+  };
+  // mini end card used by the short clips: same outro, compressed, no caption
+  SCENES.end = { id: "s-outro", cap: [], render: function (t) { SCENES.outro.render(t * 1.25); } };
+
+  var TIMELINES = {
+    teaser:   [["hook", 7.5], ["problem", 12.5], ["idea", 10], ["physical", 12.5], ["digital", 12.5], ["live", 12.5], ["outro", 7.5]],
+    physical: [["physical", 12.5], ["end", 2.5]],
+    digital:  [["digital", 12.5], ["end", 2.5]],
+    live:     [["live", 12.5], ["end", 2.5]]
+  };
+  var tl = TIMELINES[new URLSearchParams(location.search).get("tl") || "teaser"];
+  window.DURATION = tl.reduce(function (s, x) { return s + x[1]; }, 0);
+  window.CUTS = []; // scene boundaries, used by the audio generator
+  (function () { var s = 0; tl.forEach(function (x) { window.CUTS.push(s); s += x[1]; }); })();
+
+  var WIPE = 0.5; // seconds, centred on each cut
+  window.renderAt = function (T) {
+    var start = 0, idx = 0;
+    for (var i = 0; i < tl.length; i++) { if (T >= start && T < start + tl[i][1]) { idx = i; break; } start += tl[i][1]; if (i === tl.length - 1) idx = i; }
+    if (T >= window.DURATION) { idx = tl.length - 1; start = window.DURATION - tl[idx][1]; }
+    var name = tl[idx][0], D = tl[idx][1], t = T - start, sc = SCENES[name];
+    document.querySelectorAll(".scene").forEach(function (s) { s.style.display = "none"; });
+    document.getElementById(sc.id).style.display = "block";
+    sc.render(t, D);
+
+    // captions
+    var cap = "";
+    sc.cap.forEach(function (c) { if (t >= c[0]) cap = c[1]; });
+    if (t > D - .35) cap = "";
+    K.capText.innerHTML = cap;
+    K.capText.style.display = cap ? "inline" : "none";
+    K.brandbug.style.opacity = name === "outro" || name === "end" ? 0 : .75;
+
+    // Vox-style double colour wipe around every cut
+    var w = -2;
+    window.CUTS.forEach(function (c) { if (c > 0 && Math.abs(T - c) < WIPE) w = (T - c) / WIPE; });
+    if (w > -2) {
+      var a = ease.inOut(clamp((w + 1) / 2));
+      K.wipeA.style.transform = "translateX(" + (-100 + 200 * a) + "%)";
+      var b = ease.inOut(clamp((w + 1) / 2 - .12) / .88);
+      K.wipeB.style.transform = "translateX(" + (-100 + 200 * b) + "%)";
+      K.wipeA.style.display = K.wipeB.style.display = "block";
+    } else {
+      K.wipeA.style.display = K.wipeB.style.display = "none";
+    }
+  };
+  K.brandbug = document.getElementById("brandbug");
+  window.renderAt(0);
+})();
+</script>
+</body>
+</html>

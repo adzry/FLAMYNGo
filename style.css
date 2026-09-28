@@ -226,6 +226,19 @@ h2 { font-size: clamp(2.1rem, 4.4vw, 3.2rem); font-weight: 800; }
 .hero-descriptor { max-width: 520px; margin: 22px 0 0; font-family: Manrope, sans-serif; font-weight: 700; font-size: 1.15rem; letter-spacing: -.01em; color: var(--ink); }
 .hero-lead { max-width: 560px; font-size: 1.1rem; color: var(--ink-soft); margin: 14px 0 34px; }
 .hero-lead strong { color: var(--ink); }
+.hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 18px 28px; }
+.hero-watch {
+  display: inline-flex; align-items: center; gap: 12px; padding: 10px 20px 10px 10px; border: 0; border-radius: 999px;
+  background: var(--ink); color: #fff; font-weight: 700; font-size: .92rem; cursor: pointer;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.hero-watch:hover, .hero-watch:focus-visible { transform: translateY(-1px); box-shadow: 0 10px 26px rgba(107,63,212,.28); outline: none; }
+.hero-watch-icon {
+  width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center;
+  background: linear-gradient(135deg, var(--magenta), var(--purple));
+}
+.hero-watch-icon svg { width: 16px; height: 16px; margin-left: 2px; }
+.hero-watch-len { font-weight: 500; color: rgba(255,255,255,.62); }
 .hero-cta { display: inline-flex; align-items: center; gap: 12px; font-weight: 700; font-size: .92rem; color: var(--ink); border-bottom: 2px solid var(--ink); padding-bottom: 4px; }
 
 /* ---------- Hero video showcase ---------- */
@@ -246,6 +259,7 @@ h2 { font-size: clamp(2.1rem, 4.4vw, 3.2rem); font-weight: 800; }
   background: var(--surface);
 }
 .showcase-poster { width: 100%; height: 100%; object-fit: cover; -webkit-user-drag: none; user-select: none; }
+video.showcase-poster { background: #f5f0e6; }
 .showcase-badge {
   position: absolute; top: 14px; left: 14px; z-index: 2; padding: 6px 12px; border-radius: 999px;
   background: rgba(21,19,27,.55); backdrop-filter: blur(6px); color: #fff;
@@ -254,7 +268,7 @@ h2 { font-size: clamp(2.1rem, 4.4vw, 3.2rem); font-weight: 800; }
 .showcase-play {
   position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2;
   width: 62px; height: 62px; border-radius: 50%; display: grid; place-items: center;
-  background: rgba(255,255,255,.22); backdrop-filter: blur(4px); border: 1.5px solid rgba(255,255,255,.7);
+  background: rgba(21,19,27,.5); backdrop-filter: blur(4px); border: 1.5px solid rgba(255,255,255,.7);
   color: #fff; cursor: pointer; transition: transform .25s ease, box-shadow .25s ease, background .25s ease;
 }
 .showcase-play svg { margin-left: 3px; }
