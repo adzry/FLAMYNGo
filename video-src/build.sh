@@ -14,19 +14,20 @@ for tl in teaser physical digital live; do
   [ -s "$WORK/$tl-silent.mp4" ] || FFMPEG="$FFMPEG" node render.mjs "$tl" "$WORK/$tl-silent.mp4" 30
 done
 
-# 2. soundtrack (scene cuts must match TIMELINES in film.html)
-python3 music.py 75 0,7.5,20,30,42.5,55,67.5 "$WORK/teaser.wav" --drop-drums-at 67.5
-python3 music.py 15 0,12.5 "$WORK/clip.wav"
+# 2. soundtrack: story-following score + synced sound effects (score.py)
+for tl in teaser physical digital live; do
+  python3 score.py "$tl" "$WORK/$tl.wav"
+done
 
 # 3. web encodes: teaser at 1080p, carousel clips at 720p
 enc() { # in wav out scale crf
   "$FFMPEG" -y -loglevel error -i "$1" -i "$2" -map 0:v -map 1:a -vf "scale=$4:flags=lanczos" \
     -c:v libx264 -preset slow -crf "$5" -profile:v high -pix_fmt yuv420p \
-    -af "loudnorm=I=-18:TP=-1.5:LRA=11" -c:a aac -b:a 128k -ar 44100 -shortest -movflags +faststart "$3"
+    -af "loudnorm=I=-16:TP=-1.5:LRA=11" -c:a aac -b:a 128k -ar 44100 -shortest -movflags +faststart "$3"
 }
 enc "$WORK/teaser-silent.mp4" "$WORK/teaser.wav" "$OUT/flamyngo-teaser.mp4" 1920:1080 24
 for tl in physical digital live; do
-  enc "$WORK/$tl-silent.mp4" "$WORK/clip.wav" "$OUT/flamyngo-$tl.mp4" 1280:720 25
+  enc "$WORK/$tl-silent.mp4" "$WORK/$tl.wav" "$OUT/flamyngo-$tl.mp4" 1280:720 25
 done
 
 # 3b. vertical TikTok cut (1080x1920, 128 BPM, louder master for mobile)
