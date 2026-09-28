@@ -386,7 +386,7 @@ video.showcase-poster { background: #f5f0e6; }
 .workflow-details li { color: var(--ink-soft); padding-left: 20px; position: relative; }
 .workflow-details li::before { content: "—"; position: absolute; left: 0; color: var(--ink-faint); }
 .workflow-details strong { color: var(--ink); }
-.digital-figure { width: 100%; max-width: 380px; margin: 0 auto; }
+.digital-figure { width: 100%; max-width: 440px; margin: 0 auto; }
 @media (max-width: 640px) {
   .workflow { grid-template-columns: 1fr; text-align: left; }
   .workflow-line { display: none; }
@@ -395,6 +395,7 @@ video.showcase-poster { background: #f5f0e6; }
 
 /* ---------- Live system ---------- */
 .live-figure { margin-top: 50px; }
+.live-figure--second { margin-top: 28px; }
 .live-figure img { box-shadow: 0 24px 60px rgba(21,19,27,.14); }
 .live-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); margin-top: 40px; border-radius: var(--radius-md); overflow: hidden; }
 .live-card { background: #fff; padding: 26px; }
