@@ -111,8 +111,8 @@
   .ring { position: absolute; }
 
   /* ---------- scene: live ---------- */
-  .stat { position: absolute; top: 700px; width: 520px; }
-  .stat .num { font: 800 132px/1 Manrope; letter-spacing: -.05em; }
+  .stat { position: absolute; left: 1390px; width: 440px; }
+  .stat .num { font: 800 108px/1 Manrope; letter-spacing: -.05em; }
   .stat .lbl { font: 600 30px/1.3 "DM Sans"; color: var(--ink-soft); margin-top: 8px; }
   .livebadge { display: inline-flex; align-items: center; gap: 12px; background: var(--green); color: #fff; font: 800 26px Manrope; letter-spacing: .12em; padding: 10px 20px; border-radius: 999px; }
   .livebadge i { width: 14px; height: 14px; border-radius: 50%; background: #fff; display: block; }
@@ -229,7 +229,7 @@
     </div>
     <div class="abs" style="left:1290px;top:110px;width:480px" data-k="phone">
       <div style="background:#15131b;border-radius:48px;padding:16px;box-shadow:0 40px 80px rgba(40,25,10,.3)">
-        <div style="border-radius:34px;overflow:hidden;background:#fff"><img src="../assets/digital/ward-status-ui.png" style="width:448px;display:block"></div>
+        <div style="border-radius:34px;overflow:hidden;background:#f7f7f5;height:552px"><img src="../assets/digital/ward-notification-ui.png" style="width:520px;display:block;margin:-42px 0 0 -36px"></div>
       </div>
       <div class="abs hand" style="left:-330px;top:690px;font-size:48px;color:var(--purple);transform:rotate(-6deg);width:320px;line-height:1" data-k="phNote">paparan wad, kemaskini automatik →</div>
     </div>
@@ -239,19 +239,21 @@
   <section class="scene" id="s-live">
     <div class="kicker"><b>06</b> Live Data</div>
     <div class="abs h" style="left:120px;top:160px;font-size:78px" data-k="lTitle">Bukan konsep. <span class="hl" data-k="lHl" style="--hlc:#9ee6b8">Sistem sebenar.</span></div>
-    <div class="abs" style="left:120px;top:300px;width:1680px;height:360px" data-k="dashWrap">
-      <div class="card" style="width:1680px;height:360px;position:relative">
-        <img src="../assets/evidence/monitoring-dashboard.png" style="width:1680px;display:block" data-k="dashImg">
+    <div class="abs" style="left:120px;top:290px;width:1200px;height:411px" data-k="dashWrap">
+      <div class="card" style="width:1200px;height:411px;position:relative">
+        <img src="../assets/evidence/command-center.png" style="width:1200px;display:block" data-k="dashImg">
       </div>
-      <svg class="abs draw" style="left:0;top:0;overflow:visible" width="1680" height="430" viewBox="0 0 1680 430">
-        <ellipse data-k="eLive" pathLength="1" cx="1638" cy="100" rx="95" ry="48" stroke="#e0342b" stroke-width="8"/>
+      <svg class="abs draw" style="left:0;top:0;overflow:visible" width="1200" height="411" viewBox="0 0 1200 411">
+        <ellipse data-k="eLive" pathLength="1" cx="1157" cy="30" rx="72" ry="36" stroke="#e0342b" stroke-width="7"/>
+        <ellipse data-k="eWad" pathLength="1" cx="458" cy="30" rx="98" ry="38" stroke="#e0342b" stroke-width="7"/>
       </svg>
-      <div class="abs hand" style="left:1300px;top:-70px;font-size:50px;color:var(--red);transform:rotate(-3deg)" data-k="liveNote">data sebenar ↘</div>
+      <div class="abs hand" style="left:960px;top:425px;font-size:50px;color:var(--red);transform:rotate(-3deg);white-space:nowrap" data-k="liveNote">data sebenar ↗</div>
+      <div class="abs hand" style="left:300px;top:425px;font-size:50px;color:var(--red);transform:rotate(2deg)" data-k="wadNote">14 wad, satu skrin ↗</div>
     </div>
-    <div class="stat" style="left:150px" data-k="s1"><div class="num" style="color:var(--pink)"><span data-k="v1">0</span>%</div><div class="lbl">pematuhan piagam ≤ 4 jam</div></div>
-    <div class="stat" style="left:720px" data-k="s2"><div class="num" style="color:var(--purple)"><span data-k="v2">0</span></div><div class="lbl">rekod pergerakan troli</div></div>
-    <div class="stat" style="left:1290px" data-k="s3"><div class="num" style="color:var(--gold)"><span data-k="v3">0</span>+</div><div class="lbl">wad / unit terlibat</div></div>
-    <div class="abs" style="left:150px;top:900px;font:500 24px 'DM Sans';color:var(--ink-soft)" data-k="lsrc">Data awal fasa pilot · 15–21 Ogos 2026</div>
+    <div class="stat" style="top:290px" data-k="s1"><div class="num" style="color:var(--pink)"><span data-k="v1">0</span>%</div><div class="lbl">pematuhan piagam ≤ 4 jam</div></div>
+    <div class="stat" style="top:475px" data-k="s2"><div class="num" style="color:var(--purple)"><span data-k="v2">0</span></div><div class="lbl">rekod pergerakan troli</div></div>
+    <div class="stat" style="top:660px" data-k="s3"><div class="num" style="color:var(--gold)"><span data-k="v3">0</span>+</div><div class="lbl">wad / unit terlibat</div></div>
+    <div class="abs" style="left:1390px;top:845px;width:440px;font:500 24px 'DM Sans';color:var(--ink-soft)" data-k="lsrc">Data awal fasa pilot · 15–21 Ogos 2026</div>
   </section>
 
   <!-- ===================== OUTRO ===================== -->
@@ -381,8 +383,9 @@
         var d = E(t, 1.0, 1.9);
         set("dashWrap", { opacity: d, transform: "translateY(" + (1 - d) * 90 + "px) rotate(" + (-.6 * d) + "deg)" });
         var pan = E(t, 1.9, D, function (x) { return x; });
-        set("dashImg", { transform: "scale(" + (1 + .04 * pan) + ")", transformOrigin: "70% 20%" });
+        set("dashImg", { transform: "scale(" + (1 + .03 * pan) + ")", transformOrigin: "50% 10%" });
         drawPath("eLive", t, 2.9, .7); rise("liveNote", t, 3.4, .5, 10);
+        drawPath("eWad", t, 3.9, .7); rise("wadNote", t, 4.4, .5, 10);
         rise("s1", t, 5.4, .5); count("v1", t, 5.5, 1.3, 100);
         rise("s2", t, 6.0, .5); count("v2", t, 6.1, 1.3, 62);
         rise("s3", t, 6.6, .5); count("v3", t, 6.7, 1.1, 6);
