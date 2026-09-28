@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<title>FLAMYNGo TikTok — render source</title>
+<!--
+  Vertical 9:16 "energetic" cut. Same idea as film.html: every frame is a pure
+  function of time via window.renderAt(seconds). All motion is locked to a
+  128 BPM grid (BEAT = 0.46875 s) so it hits with the soundtrack from
+  music.py tiktok. Keep key content inside the TikTok safe area:
+  x 60–880, y 150–1480 (the app overlays the bottom and right edges).
+-->
+<link href="fonts/fonts.css" rel="stylesheet">
+<style>
+  :root {
+    --ink: #15131b; --pink: #e0195f; --magenta: #d93c98; --purple: #6b3fd4; --navy: #2b0f5c;
+    --gold: #e3a21a; --red: #e0342b; --green: #1fbf6a; --yellow: #ffd84d;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: #000; }
+  #stage { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: var(--ink); font-family: "DM Sans", sans-serif; color: #fff; }
+  #cam { position: absolute; inset: 0; }
+  .scene { position: absolute; inset: 0; display: none; overflow: hidden; }
+  .abs { position: absolute; }
+  .h { font-family: Manrope, sans-serif; font-weight: 800; letter-spacing: -.045em; line-height: .95; }
+  .stripes { position: absolute; inset: -400px; background: repeating-linear-gradient(-45deg, rgba(255,255,255,.06) 0 60px, transparent 60px 120px); }
+  .slam { position: absolute; left: 60px; right: 200px; text-transform: uppercase; }
+  .tag { display: inline-block; padding: 10px 26px 16px; border-radius: 14px; }
+  .sticker { position: absolute; font: 800 58px/1 Manrope; letter-spacing: -.03em; padding: 16px 28px; border-radius: 18px; color: #fff; box-shadow: 0 12px 0 rgba(0,0,0,.18); white-space: nowrap; }
+  .stat { position: absolute; left: 60px; right: 200px; }
+  .stat .n { font: 800 220px/.9 Manrope; letter-spacing: -.06em; }
+  .stat .l { font: 700 44px/1.15 "DM Sans"; margin-top: 10px; }
+  #flash { position: absolute; inset: 0; background: #fff; opacity: 0; z-index: 30; }
+  #bug { position: absolute; left: 60px; top: 120px; z-index: 25; font: 800 34px/1 Manrope; letter-spacing: -.02em; padding: 10px 16px; border-radius: 10px; background: rgba(255,255,255,.92); color: var(--ink); }
+  #bug i { font-style: normal; color: var(--pink); } #bug u { text-decoration: none; color: var(--navy); } #bug s { text-decoration: none; color: var(--gold); }
+</style>
+</head>
+<body>
+<div id="stage"><div id="cam">
+
+  <!-- 1. HOOK -->
+  <section class="scene" id="s-hook" style="background:var(--ink)">
+    <div class="stripes" data-k="hStripes"></div>
+    <div class="slam h" style="top:430px;font-size:170px" data-k="h1">Troli<br>ubat</div>
+    <div class="slam h" style="top:800px;font-size:170px;color:var(--yellow)" data-k="h2">kat mana</div>
+    <div class="slam h" style="top:1000px;font-size:150px" data-k="h3"><span class="tag" style="background:var(--pink)">sekarang?!</span></div>
+    <div class="abs h" style="left:600px;top:180px;font-size:360px;color:var(--pink)" data-k="hq">?</div>
+  </section>
+
+  <!-- 2. PROBLEM -->
+  <section class="scene" id="s-problem" style="background:var(--red)">
+    <div class="stripes"></div>
+    <div class="slam h" style="top:250px;font-size:92px" data-k="pT">Masalahnya:</div>
+    <div class="stat" style="top:420px" data-k="p1"><div class="n">1–3×</div><div class="l">kesilapan ubat sebulan</div></div>
+    <div class="stat" style="top:760px" data-k="p2"><div class="n">1–2×</div><div class="l">pecah / tumpah sebulan</div></div>
+    <div class="stat" style="top:1100px" data-k="p3"><div class="n">&gt;15<span style="font-size:110px"> min</span></div><div class="l">semakan manual</div></div>
+    <div class="abs h" style="left:470px;top:1290px;font-size:110px;background:var(--ink);padding:16px 30px 24px;border-radius:16px" data-k="pStamp">CUKUP.</div>
+  </section>
+
+  <!-- 3. INTRO / DROP -->
+  <section class="scene" id="s-intro" style="background:#fff">
+    <div class="slam h" style="top:520px;font-size:100px;color:var(--ink);text-align:center;right:60px" data-k="iK">Kenalkan…</div>
+    <img src="../assets/flamyn-go-logo.png" class="abs" style="left:40px;top:640px;width:1000px" data-k="iLogo">
+    <div class="abs h" style="left:60px;right:60px;top:1250px;text-align:center;font-size:62px;color:var(--ink)" data-k="iSub">Inovasi <span style="color:var(--pink)">Hospital Yan</span></div>
+  </section>
+
+  <!-- 4. PHYSICAL -->
+  <section class="scene" id="s-physical" style="background:var(--pink)">
+    <div class="stripes"></div>
+    <div class="slam h" style="top:230px;font-size:110px" data-k="fT">Troli<br><span style="color:var(--yellow)">sistematik</span></div>
+    <div class="abs" style="left:110px;top:520px;width:740px;height:858px;border-radius:28px;overflow:hidden;background:#fff;box-shadow:0 24px 0 rgba(0,0,0,.2)" data-k="fImg">
+      <img src="../assets/physical/trolley-diagram-rendered.jpg" style="width:740px;display:block">
+    </div>
+    <div class="sticker" style="left:460px;top:760px;background:var(--ink)" data-k="fA">A · ORAL</div>
+    <div class="sticker" style="left:460px;top:960px;background:var(--purple)" data-k="fB">B · IV</div>
+    <div class="sticker" style="left:460px;top:1160px;background:var(--gold)" data-k="fC">C · CECAIR</div>
+    <div class="abs" style="left:60px;right:200px;top:1400px;font:700 40px/1.2 'DM Sans'" data-k="fSpec">40 × 35 × 25 cm · dibina bersama KEDA</div>
+  </section>
+
+  <!-- 5. DIGITAL -->
+  <section class="scene" id="s-digital" style="background:var(--purple)">
+    <div class="stripes"></div>
+    <div class="slam h" style="top:230px;font-size:120px" data-k="dT1">Imbas QR.</div>
+    <div class="slam h" style="top:370px;font-size:92px;white-space:nowrap" data-k="dT2"><span class="tag" style="background:var(--yellow);color:var(--ink)">Wad terus tahu.</span></div>
+    <div class="abs" style="left:300px;top:580px;width:520px" data-k="dPhone">
+      <div style="background:#0d0b12;border-radius:56px;padding:18px;box-shadow:0 30px 0 rgba(0,0,0,.25)">
+        <div style="border-radius:40px;overflow:hidden;background:#fff"><img src="../assets/digital/ward-status-ui.png" style="width:484px;display:block"></div>
+      </div>
+    </div>
+    <div class="sticker" style="left:60px;top:700px;background:var(--pink);font-size:44px" data-k="d1">1 · Troli dihantar</div>
+    <div class="sticker" style="left:60px;top:880px;background:var(--ink);font-size:44px" data-k="d2">2 · Pengisian ubat selesai</div>
+    <div class="sticker" style="left:60px;top:1060px;background:var(--green);font-size:44px" data-k="d3">3 · Troli telah diambil</div>
+    <div class="abs h" style="left:60px;right:200px;top:1250px;font-size:64px;background:var(--ink);padding:18px 26px 24px;border-radius:16px" data-k="dEsc">15 min tiada respons? <span style="color:var(--yellow)">Auto peringatan.</span></div>
+  </section>
+
+  <!-- 6. LIVE -->
+  <section class="scene" id="s-live" style="background:#0f0d14">
+    <div class="stripes"></div>
+    <div class="slam h" style="top:230px;font-size:100px" data-k="lT">Bukan konsep.</div>
+    <div class="abs" style="left:60px;top:370px;display:flex;align-items:center;gap:22px;font:800 64px/1 Manrope;letter-spacing:.06em;background:var(--green);padding:18px 34px;border-radius:999px" data-k="lLive"><i data-k="lDot" style="width:30px;height:30px;border-radius:50%;background:#fff;display:block"></i>DAH LIVE</div>
+    <div class="stat" style="top:560px" data-k="l1"><div class="n" style="color:var(--magenta)"><span data-k="v1">0</span>%</div><div class="l">pematuhan piagam ≤ 4 jam</div></div>
+    <div class="stat" style="top:880px" data-k="l2"><div class="n" style="color:#9d7bff"><span data-k="v2">0</span></div><div class="l">rekod pergerakan troli</div></div>
+    <div class="stat" style="top:1200px" data-k="l3"><div class="n" style="color:var(--gold)"><span data-k="v3">0</span>+</div><div class="l">wad / unit terlibat</div></div>
+    <div class="abs" style="left:60px;top:1500px;font:500 30px 'DM Sans';opacity:.7" data-k="lSrc">Data awal fasa pilot · 15–21 Ogos 2026</div>
+  </section>
+
+  <!-- 7. OUTRO -->
+  <section class="scene" id="s-outro" style="background:#fff;color:var(--ink)">
+    <div class="slam h" style="top:300px;font-size:190px" data-k="o1">Connect.</div>
+    <div class="slam h" style="top:490px;font-size:190px;color:var(--magenta)" data-k="o2">Alert.</div>
+    <div class="slam h" style="top:680px;font-size:190px" data-k="o3">Move.</div>
+    <img src="../assets/flamyn-go-logo.png" class="abs" style="left:90px;top:900px;width:900px" data-k="oLogo">
+    <div class="abs" style="left:60px;right:60px;top:1390px;text-align:center;font:700 40px/1.4 'DM Sans'" data-k="oFoot">KIK 2026 · Hospital Yan<br><span style="color:var(--purple)">adzry.github.io/FLAMYNGo</span></div>
+  </section>
+
+  <div id="bug">FLAM<i>Y</i><u>N</u><s>Go</s></div>
+</div><div id="flash"></div></div>
+
+<script>
+(function () {
+  var K = {};
+  document.querySelectorAll("[data-k]").forEach(function (el) { K[el.getAttribute("data-k")] = el; });
+  var BEAT = 60 / 128;
+
+  function clamp(x) { return x < 0 ? 0 : x > 1 ? 1 : x; }
+  function prog(t, a, b) { return clamp((t - a) / (b - a)); }
+  function out3(x) { return 1 - Math.pow(1 - x, 3); }
+  function back(x) { var c = 2.2; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); }
+  function set(k, css) { var el = K[k]; for (var p in css) el.style[p] = css[p]; }
+  // everything below is timed in beats (b), not seconds
+  function slam(k, b, at, rot) { // big text slams down from 1.7x
+    var p = prog(b, at, at + .35);
+    set(k, { opacity: p > 0 ? 1 : 0, transform: "scale(" + (1 + .7 * Math.pow(1 - p, 3)) + ") rotate(" + (rot || 0) + "deg)", transformOrigin: "left center" });
+  }
+  function pop(k, b, at, rot) {
+    var p = back(prog(b, at, at + .45));
+    set(k, { opacity: clamp(p * 2), transform: "scale(" + Math.max(0, p) + ") rotate(" + (rot || 0) + "deg)" });
+  }
+  function slideUp(k, b, at, dist) {
+    var p = out3(prog(b, at, at + .6));
+    set(k, { opacity: p > 0 ? 1 : 0, transform: "translateY(" + (1 - p) * (dist || 1400) + "px)" });
+  }
+  function count(k, b, at, to) { K[k].textContent = Math.round(to * out3(prog(b, at, at + 1.6))); }
+  // screen shake that decays after each hit (list of beats)
+  function shake(b, hits) {
+    var s = 0; hits.forEach(function (h) { if (b >= h) s = Math.max(s, Math.exp(-(b - h) * 7)); });
+    return { x: Math.sin(b * 41) * 18 * s, y: Math.cos(b * 37) * 14 * s };
+  }
+
+  var SCENES = {
+    hook: { id: "s-hook", beats: 8, hits: [0, 2, 4, 6], render: function (b) {
+      K.hStripes.style.transform = "translateX(" + (b * 30 % 170) + "px)";
+      slam("h1", b, 0); slam("h2", b, 2); slam("h3", b, 4, -3);
+      pop("hq", b, 6, 12 + Math.sin(b * 6) * 6);
+    } },
+    problem: { id: "s-problem", beats: 8, hits: [1, 3, 5, 6.5], render: function (b) {
+      slam("pT", b, 0);
+      slideUp("p1", b, 1, 900); slideUp("p2", b, 3, 900); slideUp("p3", b, 5, 900);
+      pop("pStamp", b, 6.5, -8);
+    } },
+    intro: { id: "s-intro", beats: 4, hits: [2], render: function (b) { // logo lands on the music drop
+      var k = prog(b, 0, .3); set("iK", { opacity: b < 2 ? k : 0, transform: "scale(" + (.9 + .1 * k + .05 * prog(b, 0, 2)) + ")" });
+      var p = back(prog(b, 2, 2.5));
+      set("iLogo", { opacity: b >= 2 ? 1 : 0, transform: "scale(" + (b >= 2 ? .4 + .6 * p : 0) + ")" });
+      slideUp("iSub", b, 3, 300);
+    } },
+    physical: { id: "s-physical", beats: 8, hits: [0, 2, 3, 4], render: function (b) {
+      slam("fT", b, 0);
+      var p = out3(prog(b, .5, 1.3));
+      set("fImg", { opacity: p > 0 ? 1 : 0, transform: "translateY(" + (1 - p) * 1400 + "px) rotate(" + (-2 * p) + "deg) scale(" + (1 + .04 * prog(b, 1.3, 8)) + ")" });
+      pop("fA", b, 2, -4); pop("fB", b, 3, 3); pop("fC", b, 4, -3);
+      slideUp("fSpec", b, 5.5, 200);
+    } },
+    digital: { id: "s-digital", beats: 8, hits: [0, 1, 3, 4, 5], render: function (b) {
+      slam("dT1", b, 0); slam("dT2", b, 1, -2);
+      var p = out3(prog(b, 1.5, 2.3));
+      set("dPhone", { opacity: p > 0 ? 1 : 0, transform: "translateY(" + (1 - p) * 1400 + "px) rotate(" + (4 * p) + "deg)" });
+      pop("d1", b, 3, -2); pop("d2", b, 4, 2); pop("d3", b, 5, -1);
+      slideUp("dEsc", b, 6, 400);
+    } },
+    live: { id: "s-live", beats: 8, hits: [0, 1, 3, 5], render: function (b) {
+      slam("lT", b, 0); pop("lLive", b, 1);
+      K.lDot.style.opacity = .35 + .65 * Math.abs(Math.cos(b * Math.PI / 2));
+      slideUp("l1", b, 2, 700); count("v1", b, 2, 100);
+      slideUp("l2", b, 3.5, 700); count("v2", b, 3.5, 62);
+      slideUp("l3", b, 5, 700); count("v3", b, 5, 6);
+      slideUp("lSrc", b, 6, 100);
+    } },
+    outro: { id: "s-outro", beats: 8, hits: [0, 1, 2, 4], render: function (b) {
+      slam("o1", b, 0); slam("o2", b, 1); slam("o3", b, 2);
+      var p = back(prog(b, 4, 4.6));
+      set("oLogo", { opacity: b >= 4 ? 1 : 0, transform: "scale(" + (b >= 4 ? .5 + .5 * p : 0) + ")" });
+      slideUp("oFoot", b, 5, 200);
+    } }
+  };
+  var TL = ["hook", "problem", "intro", "physical", "digital", "live", "outro"];
+  var totalBeats = TL.reduce(function (s, n) { return s + SCENES[n].beats; }, 0);
+  window.DURATION = totalBeats * BEAT;
+
+  window.renderAt = function (T) {
+    var B = T / BEAT, start = 0, name = TL[TL.length - 1];
+    for (var i = 0; i < TL.length; i++) {
+      if (B < start + SCENES[TL[i]].beats) { name = TL[i]; break; }
+      if (i < TL.length - 1) start += SCENES[TL[i]].beats;
+    }
+    var sc = SCENES[name], b = B - start;
+    document.querySelectorAll(".scene").forEach(function (s) { s.style.display = "none"; });
+    var el = document.getElementById(sc.id); el.style.display = "block";
+    sc.render(b);
+
+    // camera: zoom-through on the cut, beat pulse, shake on hits
+    var inZoom = 1 + .18 * Math.pow(1 - prog(b, 0, .5), 3);
+    var pulse = name === "outro" && b > 6 ? 0 : .018 * Math.exp(-(B % 1) * 8);
+    var sh = shake(b, sc.hits);
+    document.getElementById("cam").style.transform = "translate(" + sh.x + "px," + sh.y + "px) scale(" + (inZoom + pulse) + ")";
+    // white flash on every cut
+    document.getElementById("flash").style.opacity = start > 0 ? Math.max(0, 1 - b / .35) * .9 : 0;
+    document.getElementById("bug").style.opacity = name === "intro" || name === "outro" ? 0 : 1;
+  };
+  window.renderAt(0);
+})();
+</script>
+</body>
+</html>

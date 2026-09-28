@@ -1,5 +1,6 @@
 // Renders film.html frame-by-frame into a silent H.264 video (or stills).
 //   node render.mjs <timeline> <out.mp4> [fps]
+//   PAGE=tiktok.html node render.mjs - <out.mp4>   (other page; stage size is read from #stage)
 //   node render.mjs <timeline> --stills <dir> <t1,t2,...>
 // Requires: playwright (Chromium) and an ffmpeg binary in $FFMPEG or PATH.
 import { chromium } from "playwright";
@@ -14,7 +15,9 @@ const ffmpeg = process.env.FFMPEG || "ffmpeg";
 
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1920, height: 1080 } });
-await page.goto(pathToFileURL(path.join(here, "film.html")).href + `?tl=${tl}`, { waitUntil: "networkidle" });
+await page.goto(pathToFileURL(path.join(here, process.env.PAGE || "film.html")).href + `?tl=${tl}`, { waitUntil: "networkidle" });
+const size = await page.evaluate(() => { const r = document.getElementById("stage").getBoundingClientRect(); return { width: Math.round(r.width), height: Math.round(r.height) }; });
+await page.setViewportSize(size);
 // fonts only download when used, and most scenes start hidden: force-load them
 await page.evaluate(() => Promise.all([
   "400 20px 'DM Sans'", "500 20px 'DM Sans'", "700 20px 'DM Sans'",

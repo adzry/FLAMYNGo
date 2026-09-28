@@ -29,6 +29,13 @@ for tl in physical digital live; do
   enc "$WORK/$tl-silent.mp4" "$WORK/clip.wav" "$OUT/flamyngo-$tl.mp4" 1280:720 25
 done
 
+# 3b. vertical TikTok cut (1080x1920, 128 BPM, louder master for mobile)
+[ -s "$WORK/tiktok-silent.mp4" ] || PAGE=tiktok.html FFMPEG="$FFMPEG" node render.mjs tiktok "$WORK/tiktok-silent.mp4" 30
+python3 music.py tiktok "$WORK/tiktok.wav"
+"$FFMPEG" -y -loglevel error -i "$WORK/tiktok-silent.mp4" -i "$WORK/tiktok.wav" -map 0:v -map 1:a \
+  -c:v libx264 -preset slow -crf 21 -profile:v high -pix_fmt yuv420p \
+  -af "loudnorm=I=-14:TP=-1.5:LRA=9" -c:a aac -b:a 160k -ar 44100 -shortest -movflags +faststart "$OUT/flamyngo-tiktok.mp4"
+
 # 4. posters (a frame where the scene is fully built)
 poster() { "$FFMPEG" -y -loglevel error -ss "$2" -i "$1" -frames:v 1 -vf scale=1280:720 -q:v 4 "$3"; }
 poster "$OUT/flamyngo-teaser.mp4" 6.9 "$OUT/posters/teaser.jpg"
